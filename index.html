@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PSE Investor Hub 🇵🇭</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#060d1a;--surface:#0c1729;--surface2:#112039;--surface3:#152847;
+  --border:#1e3355;--border2:#254268;
+  --blue:#3b82f6;--blue-dim:#1d4ed8;--blue-bg:#0d2244;
+  --green:#22c55e;--green-bg:#052e16;
+  --red:#ef4444;--red-bg:#2d0606;
+  --amber:#f59e0b;--amber-bg:#231700;
+  --purple:#a78bfa;--purple-bg:#1e0c3d;
+  --teal:#14b8a6;
+  --text:#e8f0fe;--text2:#94a3b8;--text3:#4a6080;
+  --num:var(--blue);
+  --font-ui:'DM Sans',sans-serif;
+  --font-num:'IBM Plex Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);font-size:14px;min-height:100vh;line-height:1.5}
+a{color:var(--blue);text-decoration:none}
+
+/* HEADER */
+.header{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100
+}
+.logo-badge{
+  background:linear-gradient(135deg,#dc2626,#1d4ed8);
+  border-radius:10px;padding:8px 10px;font-size:20px;line-height:1
+}
+.logo-text h1{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-0.3px}
+.logo-text p{font-size:11px;color:var(--text3)}
+.live-badge{
+  margin-left:auto;font-size:11px;font-family:var(--font-num);
+  padding:4px 10px;border-radius:20px;
+  background:var(--green-bg);color:var(--green);border:1px solid #166534
+}
+.live-badge.offline{background:#1c0303;color:#f87171;border-color:#7f1d1d}
+.live-badge.loading{background:var(--amber-bg);color:var(--amber);border-color:#78350f}
+
+/* TABS */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;gap:2px;padding:0 16px}
+.tab-btn{
+  padding:12px 18px;background:none;border:none;
+  color:var(--text3);cursor:pointer;font-size:13px;font-family:var(--font-ui);
+  border-bottom:2px solid transparent;white-space:nowrap;
+  transition:color .15s,border-color .15s;font-weight:500
+}
+.tab-btn:hover{color:var(--text2)}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:rgba(59,130,246,.06)}
+
+/* PANELS */
+.panel{display:none;padding:16px;max-width:960px;margin:0 auto}
+.panel.active{display:block}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.stat-box .label{font-size:11px;color:var(--text3);margin-bottom:6px}
+.stat-box .value{font-size:20px;font-weight:600;font-family:var(--font-num)}
+.stat-box .value.green{color:var(--green)}
+.stat-box .value.red{color:var(--red)}
+.stat-box .value.blue{color:var(--blue)}
+.stat-box .value.amber{color:var(--amber)}
+
+/* INPUTS */
+input,select{
+  width:100%;padding:9px 12px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:var(--font-ui);font-size:13px;
+  transition:border-color .15s;outline:none
+}
+input:focus,select:focus{border-color:var(--blue)}
+input::placeholder{color:var(--text3)}
+select option{background:var(--surface2)}
+.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+
+/* BUTTONS */
+.btn{
+  padding:9px 16px;border-radius:8px;border:none;cursor:pointer;
+  font-family:var(--font-ui);font-size:13px;font-weight:500;transition:opacity .15s,transform .1s
+}
+.btn:hover{opacity:.9}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-danger{background:var(--red);color:#fff;padding:5px 10px;font-size:12px}
+.btn-buy{background:#166534;color:#bbf7d0}
+.btn-sell{background:#7f1d1d;color:#fecaca}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.toggle-row{display:flex;gap:8px;margin-bottom:12px}
+.toggle-row button{flex:1}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--surface2)}
+th{padding:10px 14px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+.num{font-family:var(--font-num);text-align:right}
+.symbol-tag{font-weight:600;color:var(--blue);font-family:var(--font-num)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.amber{color:var(--amber)}
+.muted{color:var(--text3)}
+.small{font-size:11px}
+
+/* SEARCH BAR */
+.search-bar{position:relative;margin-bottom:14px}
+.search-bar input{padding-left:36px}
+.search-bar::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+
+/* PILLS */
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:none;font-family:var(--font-ui)}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pill.active{background:var(--blue);color:#fff}
+.pill.inactive{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+
+/* BADGE */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-family:var(--font-num)}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-blue{background:var(--blue-bg);color:#93c5fd}
+.badge-gray{background:var(--surface2);color:var(--text3)}
+
+/* FEE BREAKDOWN */
+.fee-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.fee-row:last-child{border-bottom:none}
+.fee-row .fee-label{color:var(--text2);font-size:13px}
+.fee-row .fee-val{font-family:var(--font-num);font-size:13px}
+.fee-total{background:var(--blue-bg);border-radius:10px;padding:14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center}
+.fee-total .label{font-size:13px;color:#93c5fd}
+.fee-total .value{font-size:20px;font-weight:600;font-family:var(--font-num);color:var(--blue)}
+
+/* HOLDING ROW */
+.holding-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.holding-row:last-child{border-bottom:none}
+.holding-info{flex:1}
+.holding-name{font-weight:600;font-size:13px}
+.holding-sub{font-size:11px;color:var(--text3);font-family:var(--font-num)}
+.holding-pnl{text-align:right}
+.holding-val{font-family:var(--font-num);font-weight:500}
+.holding-change{font-family:var(--font-num);font-size:11px}
+
+/* LOADER */
+.loader{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NOTES */
+.note{font-size:11px;color:var(--text3);margin-top:10px;padding:10px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--border2)}
+
+/* MOBILE IMPROVEMENTS */
+@media(max-width:600px){
+  .header{padding:10px 12px;gap:10px}
+  .logo-badge{font-size:16px;padding:6px 8px}
+  .logo-text h1{font-size:14px}
+  .live-badge{font-size:10px;padding:3px 8px}
+  .tabs{padding:0 8px;gap:0}
+  .tab-btn{padding:10px 10px;font-size:11px}
+  .panel{padding:10px}
+  .stat-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .stat-box .value{font-size:16px}
+  .input-grid{grid-template-columns:1fr}
+  .toggle-row{gap:6px}
+  th,td{padding:8px 8px;font-size:12px}
+  .card{padding:12px}
+  .holding-row{flex-wrap:wrap;gap:8px}
+  .fee-total .value{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header" style="flex-wrap:wrap;gap:10px">
+  <div class="logo-badge">🇵🇭</div>
+  <div class="logo-text">
+    <h1>PSE Investor Hub</h1>
+    <p id="pse-clock" style="font-family:var(--font-num);font-size:11px;color:var(--text3)">Loading time...</p>
+  </div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span id="market-hours-badge" class="live-badge" style="font-size:10px">—</span>
+    <span class="live-badge loading" id="live-badge">⟳ Loading...</span>
+    <button onclick="toggleAutoRefresh()" id="ar-btn" class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 10px">⏸ Auto: ON</button>
+  </div>
+</div>
+<!-- DATA STATUS BAR -->
+<div id="status-bar" style="background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 20px;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--text3);align-items:center">
+  <span>🟢 <strong style="color:var(--text2)">Market prices:</strong> Live via phisix-api3 (when hosted)</span>
+  <span>🟡 <strong style="color:var(--text2)">Dividends:</strong> Historical estimates — not real-time</span>
+  <span>🟢 <strong style="color:var(--text2)">News & AI Picks:</strong> Live web search on demand</span>
+  <span id="next-refresh-label" style="margin-left:auto">Next refresh: —</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('market')">📈 Market</button>
+  <button class="tab-btn" onclick="switchTab('portfolio')">💼 Portfolio</button>
+  <button class="tab-btn" onclick="switchTab('dividends')">💰 Dividends</button>
+  <button class="tab-btn" onclick="switchTab('news')">📰 PSE News</button>
+  <button class="tab-btn" onclick="switchTab('picks')">🤖 AI Picks</button>
+  <button class="tab-btn" onclick="switchTab('calculator')">🧮 Fees</button>
+</div>
+
+<!-- ═══ MARKET PANEL ═══ -->
+<div class="panel active" id="panel-market">
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <div class="search-bar" style="flex:1;min-width:200px;margin-bottom:0">
+      <input type="text" id="stock-search" placeholder="Search by symbol or name... (e.g. BDO, Jollibee)" oninput="filterStocks()" />
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="toggleCustomAdd()" id="custom-add-btn" style="white-space:nowrap">+ Add Custom Stock</button>
+  </div>
+
+  <div id="custom-add-box" style="display:none" class="card">
+    <div class="card-title">Add Any Stock Manually</div>
+    <p class="small muted" style="margin-bottom:10px">If a stock isn't listed, add it here. Price will update from live data when you host the app.</p>
+    <div class="input-grid">
+      <input type="text" id="custom-symbol" placeholder="Symbol (e.g. DITO)" style="text-transform:uppercase" />
+      <input type="text" id="custom-name" placeholder="Company Name" />
+      <input type="number" id="custom-price" placeholder="Last Known Price (₱)" step="0.01" />
+      <select id="custom-sector">
+        <option value="Banking">Banking</option>
+        <option value="Property">Property</option>
+        <option value="Consumer">Consumer</option>
+        <option value="REIT">REIT</option>
+        <option value="Telco">Telco</option>
+        <option value="Mining">Mining</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Conglomerate">Conglomerate</option>
+        <option value="Industrial">Industrial</option>
+        <option value="Financial">Financial</option>
+        <option value="Technology">Technology</option>
+        <option value="Oil & Gas">Oil & Gas</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn btn-primary" onclick="addCustomStock()">Add to Watchlist</button>
+      <button class="btn btn-outline" onclick="toggleCustomAdd()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="pill-row" id="market-sector-pills"></div>
+  <div id="market-content"><div class="loader"><span class="spinner"></span>Fetching PSE data...</div></div>
+</div>
+
+<!-- ═══ PORTFOLIO PANEL ═══ -->
+<div class="panel" id="panel-portfolio">
+  <div class="stat-grid" id="portfolio-stats">
+    <div class="stat-box"><div class="label">Total Cost</div><div class="value blue" id="stat-cost">₱0.00</div></div>
+    <div class="stat-box"><div class="label">Market Value</div><div class="value blue" id="stat-value">₱0.00</div></div>
+    <div class="stat-box"><div class="label">Unrealized G/L</div><div class="value" id="stat-gain">₱0.00</div></div>
+    <div class="stat-box"><div class="label">Return</div><div class="value" id="stat-pct">0.00%</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Holdings</div>
+    <div id="holdings-list"><div class="loader" style="padding:20px">No holdings yet. Add one below.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Add Holding</div>
+    <div class="input-grid">
+      <input type="text" id="add-symbol" placeholder="Symbol (e.g. BDO)" style="text-transform:uppercase" />
+      <input type="number" id="add-shares" placeholder="Number of Shares" min="1" />
+      <input type="number" id="add-price" placeholder="Buy Price per Share (₱)" min="0.01" step="0.01" />
+      <input type="date" id="add-date" />
+      <select id="add-broker">
+        <option value="col">COL Financial (0.25%)</option>
+        <option value="bpi">BPI Trade (0.30%)</option>
+        <option value="firstmetro">First Metro Sec (0.25%)</option>
+        <option value="gotrade">GCash/GoTrade (0.25%)</option>
+        <option value="dragonfi">DragonFi (0.20%)</option>
+        <option value="abscbn">CitisecOnline (0.25%)</option>
+        <option value="custom">Custom Rate</option>
+      </select>
+      <button class="btn btn-primary" onclick="addHolding()">+ Add Stock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DIVIDENDS PANEL ═══ -->
+<div class="panel" id="panel-dividends">
+  <div id="div-source-note" class="note" style="border-left-color:var(--amber);background:var(--amber-bg);color:var(--amber);margin-bottom:12px">
+    ⚠️ <strong>No backend connected.</strong> Showing estimated historical data. Deploy the backend server and set <code>BACKEND_URL</code> to get real PSE Edge disclosures automatically.
+  </div>
+  <div class="pill-row" id="sector-pills"></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Stock</th>
+          <th>Sector</th>
+          <th class="num">DPS (₱)</th>
+          <th>Ex-Date</th>
+          <th>Pay Date</th>
+          <th class="num">Est. Yield</th>
+          <th>Countdown</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody id="div-table-body"></tbody>
+    </table>
+  </div>
+  <div class="note" style="border-left-color:var(--amber);background:var(--amber-bg)">
+    ⚠️ <strong>Dividend data is NOT real-time.</strong> The dates, DPS, and yields shown here are based on historical patterns and manually curated estimates. They may not reflect the latest declarations.
+    Always confirm on <a href="https://edge.pse.com.ph" target="_blank">PSE Edge</a> before making any decisions. Yields are annualized based on current/reference price.
+  </div>
+</div>
+
+<!-- ═══ NEWS PANEL ═══ -->
+<div class="panel" id="panel-news">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div>
+      <p style="font-size:13px;color:var(--text2)">AI-powered PSE & Philippine market news using web search.</p>
+    </div>
+    <button class="btn btn-primary" onclick="loadNews()" id="news-refresh-btn">🔍 Fetch Latest News</button>
+  </div>
+  <div class="input-grid" style="margin-bottom:14px">
+    <input type="text" id="news-topic" placeholder='Custom topic (e.g. "BDO earnings", "REIT dividends 2026")' />
+    <button class="btn btn-outline" onclick="loadNews(true)">Search This Topic</button>
+  </div>
+  <div id="news-content">
+    <div class="card" style="text-align:center;padding:40px;border-style:dashed">
+      <div style="font-size:32px;margin-bottom:12px">📰</div>
+      <p style="color:var(--text2);margin-bottom:6px">Click <strong>Fetch Latest News</strong> to load AI-curated PSE news</p>
+      <p class="small muted">Powered by Claude AI + real-time web search</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AI PICKS PANEL ═══ -->
+<div class="panel" id="panel-picks">
+  <div style="margin-bottom:16px">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Claude AI analyzes PSE stocks using four investment frameworks. Pick a strategy to get personalized stock picks.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px">
+      <button class="pick-strategy-btn btn" data-strat="GROWTH" onclick="loadPicks('GROWTH')" style="border:1px solid var(--blue);color:var(--blue);background:var(--blue-bg);padding:14px;border-radius:10px;text-align:left">
+        <div style="font-size:18px;margin-bottom:6px">🚀</div>
+        <div style="font-weight:600;margin-bottom:4px">Growth</div>
+        <div style="font-size:11px;color:#93c5fd">High revenue & earnings growth stocks</div>
+      </button>
+      <button class="pick-strategy-btn btn" data-strat="VALUE" onclick="loadPicks('VALUE')" style="border:1px solid var(--green);color:var(--green);background:var(--green-bg);padding:14px;border-radius:10px;text-align:left">
+        <div style="font-size:18px;margin-bottom:6px">💎</div>
+        <div style="font-weight:600;margin-bottom:4px">Value</div>
+        <div style="font-size:11px;color:#86efac">Undervalued stocks trading below intrinsic value</div>
+      </button>
+      <button class="pick-strategy-btn btn" data-strat="MOAT" onclick="loadPicks('MOAT')" style="border:1px solid var(--purple);color:var(--purple);background:var(--purple-bg);padding:14px;border-radius:10px;text-align:left">
+        <div style="font-size:18px;margin-bottom:6px">🏰</div>
+        <div style="font-weight:600;margin-bottom:4px">Moat</div>
+        <div style="font-size:11px;color:#c4b5fd">Companies with strong competitive advantages</div>
+      </button>
+      <button class="pick-strategy-btn btn" data-strat="DIVIDENDS" onclick="loadPicks('DIVIDENDS')" style="border:1px solid var(--amber);color:var(--amber);background:var(--amber-bg);padding:14px;border-radius:10px;text-align:left">
+        <div style="font-size:18px;margin-bottom:6px">💰</div>
+        <div style="font-weight:600;margin-bottom:4px">Dividends</div>
+        <div style="font-size:11px;color:#fcd34d">Consistent high-yield dividend payers</div>
+      </button>
+    </div>
+  </div>
+  <div id="picks-content">
+    <div class="card" style="text-align:center;padding:40px;border-style:dashed">
+      <div style="font-size:32px;margin-bottom:12px">🤖</div>
+      <p style="color:var(--text2);margin-bottom:6px">Choose a strategy above to get AI-powered stock picks</p>
+      <p class="small muted">Claude AI analyzes fundamentals, moats, and market data for PSE stocks</p>
+    </div>
+  </div>
+  <div class="note" style="margin-top:12px">⚠️ AI picks are for <strong>educational purposes only</strong> and not financial advice. Always do your own research (DYOR) before investing.</div>
+</div>
+
+<!-- ═══ CALCULATOR PANEL ═══ -->
+<div class="panel" id="panel-calculator">
+  <div class="card">
+    <div class="card-title">Transaction Type</div>
+    <div class="toggle-row">
+      <button class="btn btn-buy active-type" id="type-buy" onclick="setCalcType('buy')">📈 BUY</button>
+      <button class="btn btn-outline" id="type-sell" onclick="setCalcType('sell')">📉 SELL</button>
+    </div>
+    <div class="input-grid">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Number of Shares</div>
+        <input type="number" id="calc-shares" placeholder="e.g. 1000" oninput="calcFees()" />
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Price per Share (₱)</div>
+        <input type="number" id="calc-price" placeholder="e.g. 45.50" step="0.01" oninput="calcFees()" />
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Broker</div>
+        <select id="calc-broker" onchange="calcFees()">
+          <option value="col">COL Financial (0.25%)</option>
+          <option value="bpi">BPI Trade (0.30%)</option>
+          <option value="firstmetro">First Metro Sec (0.25%)</option>
+          <option value="gotrade">GCash/GoTrade (0.25%)</option>
+          <option value="dragonfi">DragonFi (0.20%)</option>
+          <option value="abscbn">CitisecOnline (0.25%)</option>
+          <option value="custom">Custom Rate</option>
+        </select>
+      </div>
+      <div id="custom-rate-wrap" style="display:none">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Custom Commission Rate</div>
+        <input type="number" id="calc-custom-rate" value="0.0025" step="0.0001" oninput="calcFees()" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="fee-result" style="display:none">
+    <div class="card-title">Fee Breakdown</div>
+    <div id="fee-rows"></div>
+    <div class="fee-total" id="fee-total-box">
+      <span class="label" id="fee-total-label">Total Cost</span>
+      <span class="value" id="fee-total-val">₱0.00</span>
+    </div>
+    <div class="note" id="fee-note"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// BACKEND CONFIG — change this after you deploy
+// ═══════════════════════════════════════════════
+// Set BACKEND_URL to your Railway/Render server URL, e.g.:
+//   const BACKEND_URL = "https://pse-backend.railway.app";
+// Leave as "" to use direct API (phisix-api3) without a backend.
+const BACKEND_URL = "https://pse-backend-production.up.railway.app";
+
+async function apiGet(path) {
+  if (!BACKEND_URL) throw new Error("No backend configured");
+  const res = await fetch(`${BACKEND_URL}${path}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+const DIVIDENDS = [
+  {symbol:"AREIT",name:"Ayala REIT",dps:0.97,exDate:"2026-04-15",payDate:"2026-05-08",freq:"Quarterly",sector:"REIT",refPrice:26.5},
+  {symbol:"DDMPR",name:"DoubleDragon REIT",dps:0.189,exDate:"2026-04-22",payDate:"2026-05-15",freq:"Quarterly",sector:"REIT",refPrice:7.8},
+  {symbol:"RCR",name:"MREIT Inc.",dps:0.226,exDate:"2026-05-10",payDate:"2026-06-05",freq:"Quarterly",sector:"REIT",refPrice:9.8},
+  {symbol:"FILRT",name:"Filinvest REIT",dps:0.158,exDate:"2026-05-20",payDate:"2026-06-12",freq:"Quarterly",sector:"REIT",refPrice:5.3},
+  {symbol:"MREIT",name:"Megaworld REIT",dps:0.22,exDate:"2026-05-28",payDate:"2026-06-18",freq:"Quarterly",sector:"REIT",refPrice:10.0},
+  {symbol:"CREIT",name:"Citicore REIT",dps:0.1624,exDate:"2026-04-30",payDate:"2026-05-22",freq:"Quarterly",sector:"REIT",refPrice:5.5},
+  {symbol:"BDO",name:"BDO Unibank",dps:1.50,exDate:"2026-05-15",payDate:"2026-06-08",freq:"Annual",sector:"Banking",refPrice:155},
+  {symbol:"BPI",name:"Bank of Philippine Islands",dps:3.80,exDate:"2026-04-28",payDate:"2026-05-20",freq:"Annual",sector:"Banking",refPrice:118},
+  {symbol:"MBT",name:"Metropolitan Bank",dps:1.00,exDate:"2026-06-08",payDate:"2026-06-28",freq:"Annual",sector:"Banking",refPrice:63},
+  {symbol:"SECB",name:"Security Bank",dps:2.50,exDate:"2026-05-05",payDate:"2026-05-28",freq:"Annual",sector:"Banking",refPrice:72},
+  {symbol:"TEL",name:"PLDT Inc.",dps:67.00,exDate:"2026-04-10",payDate:"2026-05-05",freq:"Annual",sector:"Telco",refPrice:1080},
+  {symbol:"GLO",name:"Globe Telecom",dps:117.00,exDate:"2026-05-22",payDate:"2026-06-15",freq:"Annual",sector:"Telco",refPrice:1850},
+  {symbol:"MER",name:"Manila Electric Co.",dps:15.00,exDate:"2026-05-08",payDate:"2026-05-30",freq:"Semi-Annual",sector:"Utilities",refPrice:425},
+  {symbol:"AP",name:"Aboitiz Power",dps:1.20,exDate:"2026-06-18",payDate:"2026-07-10",freq:"Annual",sector:"Utilities",refPrice:42},
+  {symbol:"AGP",name:"AG&P",dps:0.50,exDate:"2026-06-25",payDate:"2026-07-18",freq:"Annual",sector:"Utilities",refPrice:18},
+  {symbol:"ALI",name:"Ayala Land",dps:0.715,exDate:"2026-06-05",payDate:"2026-06-25",freq:"Annual",sector:"Property",refPrice:30},
+  {symbol:"SMPH",name:"SM Prime Holdings",dps:0.56,exDate:"2026-05-18",payDate:"2026-06-10",freq:"Annual",sector:"Property",refPrice:33},
+  {symbol:"DDPC",name:"DoubleDragon Properties",dps:0.10,exDate:"2026-07-01",payDate:"2026-07-22",freq:"Annual",sector:"Property",refPrice:8.5},
+  {symbol:"SM",name:"SM Investments",dps:16.00,exDate:"2026-06-12",payDate:"2026-07-05",freq:"Annual",sector:"Conglomerate",refPrice:950},
+  {symbol:"AC",name:"Ayala Corporation",dps:11.00,exDate:"2026-05-25",payDate:"2026-06-18",freq:"Annual",sector:"Conglomerate",refPrice:625},
+  {symbol:"AGI",name:"Alliance Global Group",dps:0.20,exDate:"2026-06-22",payDate:"2026-07-15",freq:"Annual",sector:"Conglomerate",refPrice:10.5},
+  {symbol:"AEV",name:"Aboitiz Equity Ventures",dps:1.00,exDate:"2026-05-30",payDate:"2026-06-22",freq:"Annual",sector:"Conglomerate",refPrice:52},
+  {symbol:"JFC",name:"Jollibee Foods",dps:3.50,exDate:"2026-05-06",payDate:"2026-05-28",freq:"Annual",sector:"Consumer",refPrice:240},
+  {symbol:"URC",name:"Universal Robina",dps:3.00,exDate:"2026-04-30",payDate:"2026-05-22",freq:"Annual",sector:"Consumer",refPrice:102},
+  {symbol:"MONDE",name:"Monde Nissin",dps:0.30,exDate:"2026-05-15",payDate:"2026-06-08",freq:"Annual",sector:"Consumer",refPrice:11},
+  {symbol:"DMC",name:"DMCI Holdings",dps:0.42,exDate:"2026-06-28",payDate:"2026-07-20",freq:"Semi-Annual",sector:"Conglomerate",refPrice:11.5},
+];
+
+const BROKERS = {
+  col:{name:"COL Financial",rate:0.0025,min:20},
+  bpi:{name:"BPI Trade",rate:0.003,min:20},
+  firstmetro:{name:"First Metro Sec",rate:0.0025,min:20},
+  gotrade:{name:"GCash/GoTrade",rate:0.0025,min:0},
+  dragonfi:{name:"DragonFi",rate:0.002,min:0},
+  abscbn:{name:"ABS-CBN/CitisecOnline",rate:0.0025,min:20},
+  custom:{name:"Custom Rate",rate:0.0025,min:20},
+};
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let liveStocks = [];
+let portfolio = [
+  {id:1,symbol:"BDO",shares:100,buyPrice:140,date:"2024-01-15",broker:"col"},
+  {id:2,symbol:"AREIT",shares:1000,buyPrice:28,date:"2024-03-10",broker:"col"},
+  {id:3,symbol:"JFC",shares:50,buyPrice:220,date:"2023-11-20",broker:"col"},
+];
+let marketSectorFilter = "All";
+
+function toggleCustomAdd(){
+  const box=document.getElementById("custom-add-box");
+  const btn=document.getElementById("custom-add-btn");
+  const open=box.style.display==="none";
+  box.style.display=open?"block":"none";
+  btn.textContent=open?"✕ Cancel":"+ Add Custom Stock";
+}
+
+function addCustomStock(){
+  const sym=document.getElementById("custom-symbol").value.trim().toUpperCase();
+  const name=document.getElementById("custom-name").value.trim();
+  const price=parseFloat(document.getElementById("custom-price").value)||0;
+  const sector=document.getElementById("custom-sector").value;
+  if(!sym||!name){alert("Please enter at least a Symbol and Company Name.");return;}
+  const exists=liveStocks.find(s=>s.symbol===sym);
+  if(exists){alert(`${sym} is already in the list!`);return;}
+  liveStocks.push({symbol:sym,name,price,change:0,volume:0,sector,custom:true});
+  liveStocks.sort((a,b)=>a.symbol.localeCompare(b.symbol));
+  document.getElementById("custom-symbol").value="";
+  document.getElementById("custom-name").value="";
+  document.getElementById("custom-price").value="";
+  toggleCustomAdd();
+  buildMarketSectorPills();
+  filterStocks();
+}
+
+function buildMarketSectorPills(){
+  const sectors=["All",...new Set(liveStocks.map(s=>s.sector||"Other").filter(Boolean))].sort();
+  document.getElementById("market-sector-pills").innerHTML=sectors.map(s=>
+    `<button class="pill ${s===marketSectorFilter?"active":"inactive"}" onclick="setMarketSector('${s}')">${s}</button>`
+  ).join("");
+}
+
+function setMarketSector(sector){
+  marketSectorFilter=sector;
+  buildMarketSectorPills();
+  filterStocks();
+}
+let calcType = "buy";
+let activeTab = "market";
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+const peso = (n, dec=2) => "₱" + parseFloat(n).toLocaleString("en-PH",{minimumFractionDigits:dec,maximumFractionDigits:dec});
+const pct = n => (n>=0?"+":"")+parseFloat(n).toFixed(2)+"%";
+const daysUntil = d => {
+  const t=new Date();t.setHours(0,0,0,0);
+  return Math.ceil((new Date(d)-t)/(864e5));
+};
+const annualMult = f => f==="Quarterly"?4:f==="Semi-Annual"?2:1;
+
+function computeFees(type,shares,price,broker="col",customRate=0.0025){
+  const amt = shares*price;
+  const r = broker==="custom"?customRate:BROKERS[broker].rate;
+  const minC = BROKERS[broker]?.min??20;
+  const comm = Math.max(amt*r,minC);
+  const vat = comm*0.12;
+  const sccp = amt*0.0001;
+  const pse = amt*0.00005;
+  const stt = type==="sell"?amt*0.006:0;
+  const total = comm+vat+sccp+pse+stt;
+  return {amt,comm,vat,sccp,pse,stt,total,net:type==="sell"?amt-total:amt+total};
+}
+
+// ═══════════════════════════════════════════════
+// TAB ROUTING
+// ═══════════════════════════════════════════════
+const ALL_TABS=['market','portfolio','dividends','news','picks','calculator'];
+function switchTab(tab){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("panel-"+tab).classList.add("active");
+  document.querySelectorAll(".tab-btn")[ALL_TABS.indexOf(tab)].classList.add("active");
+  activeTab=tab;
+  if(tab==="portfolio")renderPortfolio();
+}
+
+const DEMO_STOCKS = [
+  // PSEi 30 + Index Stocks
+  {symbol:"AC",name:"Ayala Corporation",price:595.00,change:0.85,volume:421300,sector:"Conglomerate"},
+  {symbol:"AEV",name:"Aboitiz Equity Ventures",price:50.50,change:0.50,volume:1230000,sector:"Conglomerate"},
+  {symbol:"AGI",name:"Alliance Global Group",price:10.32,change:-1.24,volume:8421000,sector:"Conglomerate"},
+  {symbol:"ALI",name:"Ayala Land Inc.",price:28.90,change:1.40,volume:5220000,sector:"Property"},
+  {symbol:"AP",name:"Aboitiz Power Corp.",price:40.20,change:-0.74,volume:2140000,sector:"Utilities"},
+  {symbol:"BDO",name:"BDO Unibank Inc.",price:152.00,change:1.33,volume:1840000,sector:"Banking"},
+  {symbol:"BPI",name:"Bank of Philippine Islands",price:116.50,change:-0.85,volume:990000,sector:"Banking"},
+  {symbol:"DMC",name:"DMCI Holdings Inc.",price:11.34,change:0.35,volume:4120000,sector:"Conglomerate"},
+  {symbol:"GLO",name:"Globe Telecom Inc.",price:1820.00,change:0.55,volume:42000,sector:"Telco"},
+  {symbol:"ICT",name:"Int'l Container Terminal Svcs",price:215.00,change:2.38,volume:128000,sector:"Industrial"},
+  {symbol:"JFC",name:"Jollibee Foods Corp.",price:235.00,change:-2.08,volume:341000,sector:"Consumer"},
+  {symbol:"JGS",name:"JG Summit Holdings",price:41.80,change:0.72,volume:980000,sector:"Conglomerate"},
+  {symbol:"LTG",name:"LT Group Inc.",price:11.88,change:-0.33,volume:3200000,sector:"Conglomerate"},
+  {symbol:"MBT",name:"Metropolitan Bank & Trust",price:62.10,change:-1.43,volume:1540000,sector:"Banking"},
+  {symbol:"MER",name:"Manila Electric Company",price:418.00,change:0.48,volume:95000,sector:"Utilities"},
+  {symbol:"MPI",name:"Metro Pacific Investments",price:4.41,change:2.08,volume:7800000,sector:"Conglomerate"},
+  {symbol:"PCOR",name:"Pilipinas Shell Petroleum",price:25.30,change:-0.78,volume:810000,sector:"Oil & Gas"},
+  {symbol:"RRHI",name:"Robinsons Retail Holdings",price:58.00,change:-0.34,volume:215000,sector:"Consumer"},
+  {symbol:"SCC",name:"Semirara Mining & Power",price:27.00,change:1.88,volume:2900000,sector:"Mining"},
+  {symbol:"SECB",name:"Security Bank Corp.",price:71.50,change:0.70,volume:380000,sector:"Banking"},
+  {symbol:"SM",name:"SM Investments Corp.",price:945.00,change:0.53,volume:138000,sector:"Conglomerate"},
+  {symbol:"SMPH",name:"SM Prime Holdings Inc.",price:32.50,change:-0.92,volume:3100000,sector:"Property"},
+  {symbol:"TEL",name:"PLDT Inc.",price:1060.00,change:-0.94,volume:82000,sector:"Telco"},
+  {symbol:"URC",name:"Universal Robina Corp.",price:100.50,change:1.52,volume:540000,sector:"Consumer"},
+  // REITs
+  {symbol:"AREIT",name:"Ayala REIT Inc.",price:26.30,change:0.38,volume:3450000,sector:"REIT"},
+  {symbol:"CREIT",name:"Citicore Energy REIT",price:5.42,change:0.74,volume:5100000,sector:"REIT"},
+  {symbol:"DDMPR",name:"DoubleDragon Properties REIT",price:7.65,change:-1.93,volume:2310000,sector:"REIT"},
+  {symbol:"FILRT",name:"Filinvest REIT Corp.",price:5.25,change:0.57,volume:3800000,sector:"REIT"},
+  {symbol:"MREIT",name:"MREIT Inc.",price:9.75,change:0.52,volume:6100000,sector:"REIT"},
+  {symbol:"RCR",name:"RL Commercial REIT",price:9.80,change:0.51,volume:4200000,sector:"REIT"},
+  {symbol:"VREIT",name:"VistaREIT Inc.",price:1.95,change:0.52,volume:8200000,sector:"REIT"},
+  {symbol:"PREIT",name:"Premiere Island Power REIT",price:1.62,change:-1.22,volume:4100000,sector:"REIT"},
+  // Banking
+  {symbol:"CBK",name:"China Banking Corp.",price:37.00,change:0.27,volume:320000,sector:"Banking"},
+  {symbol:"EW",name:"East West Banking Corp.",price:8.50,change:-0.58,volume:1200000,sector:"Banking"},
+  {symbol:"PNB",name:"Philippine National Bank",price:22.60,change:0.44,volume:680000,sector:"Banking"},
+  {symbol:"PSB",name:"Philippine Savings Bank",price:72.00,change:0.00,volume:45000,sector:"Banking"},
+  {symbol:"RCB",name:"Rizal Commercial Banking",price:28.50,change:0.35,volume:290000,sector:"Banking"},
+  {symbol:"UBP",name:"Union Bank of the Philippines",price:62.50,change:-0.79,volume:420000,sector:"Banking"},
+  // Property & Real Estate
+  {symbol:"CLI",name:"Cebu Landmasters Inc.",price:5.10,change:1.99,volume:2800000,sector:"Property"},
+  {symbol:"CPG",name:"Century Properties Group",price:1.21,change:0.83,volume:6500000,sector:"Property"},
+  {symbol:"DDPC",name:"DoubleDragon Properties",price:8.50,change:-0.58,volume:3100000,sector:"Property"},
+  {symbol:"FLI",name:"Filinvest Land Inc.",price:0.83,change:1.22,volume:12000000,sector:"Property"},
+  {symbol:"HOUSE",name:"8990 Holdings Inc.",price:10.60,change:0.95,volume:1800000,sector:"Property"},
+  {symbol:"MEG",name:"Megaworld Corporation",price:2.12,change:-0.47,volume:25000000,sector:"Property"},
+  {symbol:"RLC",name:"Robinsons Land Corp.",price:16.30,change:0.62,volume:1100000,sector:"Property"},
+  {symbol:"SMDC",name:"SM Development Corp.",price:7.80,change:-0.51,volume:4200000,sector:"Property"},
+  {symbol:"VLL",name:"Vista Land & Lifescapes",price:2.25,change:0.45,volume:8100000,sector:"Property"},
+  // Consumer & Retail
+  {symbol:"CNPF",name:"Century Pacific Food Inc.",price:30.50,change:1.33,volume:820000,sector:"Consumer"},
+  {symbol:"EMP",name:"Emperador Inc.",price:20.80,change:-0.48,volume:1500000,sector:"Consumer"},
+  {symbol:"GMA7",name:"GMA Network Inc.",price:8.30,change:0.61,volume:900000,sector:"Media"},
+  {symbol:"MAXS",name:"Max's Group Inc.",price:5.20,change:1.96,volume:1200000,sector:"Consumer"},
+  {symbol:"MONDE",name:"Monde Nissin Corp.",price:10.82,change:1.50,volume:4400000,sector:"Consumer"},
+  {symbol:"PGOLD",name:"Puregold Price Club Inc.",price:38.80,change:-0.51,volume:650000,sector:"Consumer"},
+  {symbol:"RFM",name:"RFM Corporation",price:5.00,change:0.00,volume:480000,sector:"Consumer"},
+  {symbol:"SSI",name:"SSI Group Inc.",price:2.90,change:0.69,volume:1800000,sector:"Consumer"},
+  // Industrial & Mining
+  {symbol:"ANS",name:"A. Soriano Corporation",price:7.30,change:0.14,volume:210000,sector:"Industrial"},
+  {symbol:"ATN",name:"A.T.N. Holdings Inc.",price:1.16,change:0.87,volume:3200000,sector:"Industrial"},
+  {symbol:"ATLAS",name:"Atlas Consolidated Mining",price:6.80,change:2.72,volume:5400000,sector:"Mining"},
+  {symbol:"FNI",name:"Global Ferronickel Holdings",price:1.29,change:-0.77,volume:8900000,sector:"Mining"},
+  {symbol:"LC",name:"Lopez Holdings Corp.",price:4.30,change:0.00,volume:560000,sector:"Conglomerate"},
+  {symbol:"MRC",name:"MRC Allied Inc.",price:1.10,change:1.85,volume:4200000,sector:"Mining"},
+  {symbol:"NIKL",name:"Nickel Asia Corp.",price:3.85,change:-1.28,volume:6800000,sector:"Mining"},
+  {symbol:"ORE",name:"Ore Asia Mining & Dev't",price:0.61,change:1.67,volume:7800000,sector:"Mining"},
+  {symbol:"PX",name:"Philex Mining Corp.",price:4.20,change:0.48,volume:3900000,sector:"Mining"},
+  // Utilities & Energy
+  {symbol:"AGP",name:"AG&P",price:18.00,change:0.00,volume:210000,sector:"Utilities"},
+  {symbol:"FGEN",name:"First Gen Corporation",price:20.50,change:0.98,volume:1800000,sector:"Utilities"},
+  {symbol:"MWIDE",name:"Megawide Construction Corp.",price:9.80,change:1.55,volume:2100000,sector:"Industrial"},
+  {symbol:"PHEN",name:"Premium Leisure Corp.",price:1.02,change:-0.97,volume:9500000,sector:"Leisure"},
+  // Telco & Tech
+  {symbol:"DITO",name:"DITO CME Holdings Corp.",price:3.14,change:0.96,volume:14000000,sector:"Telco"},
+  {symbol:"NOW",name:"Now Telecom Company Inc.",price:0.95,change:1.06,volume:5600000,sector:"Telco"},
+  // Financial Services & Insurance
+  {symbol:"COL",name:"COL Financial Group Inc.",price:5.50,change:0.92,volume:720000,sector:"Financial"},
+  {symbol:"FDC",name:"Filinvest Development Corp.",price:3.88,change:-0.51,volume:2800000,sector:"Conglomerate"},
+  {symbol:"GFI",name:"Goldilocks Food Inc.",price:1.12,change:0.00,volume:310000,sector:"Consumer"},
+  {symbol:"IMI",name:"Integrated Micro-Electronics",price:6.50,change:1.56,volume:1200000,sector:"Technology"},
+  {symbol:"IPVG",name:"IP Ventures Inc.",price:2.20,change:2.33,volume:4100000,sector:"Technology"},
+  {symbol:"MACAY",name:"Macay Holdings Inc.",price:7.80,change:0.00,volume:180000,sector:"Consumer"},
+  {symbol:"MEDCO",name:"MedCo Energi Internasional",price:0.95,change:-1.04,volume:8200000,sector:"Oil & Gas"},
+  {symbol:"MWC",name:"Manila Water Company Inc.",price:22.50,change:0.45,volume:680000,sector:"Utilities"},
+  {symbol:"PTC",name:"Philippine Telegraph & Tel.",price:0.48,change:0.00,volume:2100000,sector:"Telco"},
+  {symbol:"PIZZA",name:"Shakey's Pizza Asia Ventures",price:9.80,change:2.08,volume:840000,sector:"Consumer"},
+  {symbol:"PSE",name:"Philippine Stock Exchange Inc.",price:185.00,change:0.54,volume:48000,sector:"Financial"},
+  {symbol:"PXP",name:"PXP Energy Corporation",price:6.50,change:3.17,volume:4200000,sector:"Oil & Gas"},
+  {symbol:"SPC",name:"SPC Power Corporation",price:7.50,change:0.00,volume:280000,sector:"Utilities"},
+  {symbol:"STR",name:"Starmalls Inc.",price:6.80,change:0.59,volume:920000,sector:"Property"},
+  {symbol:"TUGS",name:"Harbor Star Shipping Svcs",price:2.10,change:-0.47,volume:1800000,sector:"Industrial"},
+  {symbol:"VMC",name:"Victorias Milling Co.",price:11.50,change:0.44,volume:320000,sector:"Consumer"},
+  {symbol:"WIN",name:"Wellex Industries Inc.",price:1.25,change:0.81,volume:5600000,sector:"Industrial"},
+  {symbol:"X",name:"Xurpas Inc.",price:0.55,change:-0.91,volume:7200000,sector:"Technology"},
+  {symbol:"KPPI",name:"Kepco Philippines Corp.",price:1.55,change:0.65,volume:3100000,sector:"Utilities"},
+  {symbol:"LR",name:"Leisure & Resorts World",price:0.78,change:1.30,volume:6800000,sector:"Leisure"},
+  {symbol:"MRSGI",name:"Metro Retail Stores Group",price:1.90,change:-0.52,volume:4200000,sector:"Consumer"},
+  {symbol:"PHN",name:"Philippine National Oil Co.",price:1.02,change:0.99,volume:8500000,sector:"Oil & Gas"},
+  {symbol:"SEVN",name:"7-Eleven Philippines",price:32.00,change:0.00,volume:190000,sector:"Consumer"},
+];
+// ═══════════════════════════════════════════════
+// MARKET WATCH
+// ═══════════════════════════════════════════════
+async function loadMarket(){
+  const badge=document.getElementById("live-badge");
+  badge.className="live-badge loading";badge.textContent="⟳ Loading...";
+
+  // Helper: fetch with timeout
+  const fetchWithTimeout=(url,opts={},ms=8000)=>{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),ms);
+    return fetch(url,{...opts,signal:ctrl.signal}).finally(()=>clearTimeout(tid));
+  };
+
+  // 1️⃣ Try backend server
+  if(BACKEND_URL){
+    try{
+      const json=await Promise.race([
+        apiGet("/api/stocks"),
+        new Promise((_,r)=>setTimeout(()=>r(new Error("timeout")),8000))
+      ]);
+      // If backend returns stocks, use them
+      if(json.data && json.data.length>0){
+        liveStocks=json.data.sort((a,b)=>a.symbol.localeCompare(b.symbol));
+        badge.className="live-badge";
+        const t=new Date(json.updatedAt).toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
+        badge.textContent=`✅ Backend · ${liveStocks.length} stocks · ${t}`;
+        renderMarket(liveStocks,false);
+        if(activeTab==="portfolio")renderPortfolio();
+        return;
+      }
+      // Backend returned 0 stocks (weekend/market closed) — fall through to demo
+      console.log("Backend online but 0 stocks — market closed or weekend");
+    }catch(e){console.warn("Backend unavailable:",e.message);}
+  }
+
+  // 2️⃣ Try phisix-api3 directly with timeout
+  try{
+    const res=await fetchWithTimeout("https://phisix-api3.appspot.com/stocks.json",{},7000);
+    if(!res.ok) throw new Error("API error");
+    const data=await res.json();
+    const stocks=(data.stock||[]).map(s=>({
+      symbol:s.symbol,name:s.name,
+      price:parseFloat(s.price.amount),
+      change:parseFloat(s.percent_change),
+      volume:parseFloat(s.volume),
+    })).sort((a,b)=>a.symbol.localeCompare(b.symbol));
+    if(stocks.length>0){
+      liveStocks=stocks;
+      badge.className="live-badge";
+      const t=new Date().toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
+      badge.textContent=`✅ ${liveStocks.length} stocks · ${t}`;
+      renderMarket(liveStocks,false);
+      if(activeTab==="portfolio")renderPortfolio();
+      return;
+    }
+    throw new Error("No stocks returned");
+  }catch(e){
+    console.warn("phisix-api3 failed:",e.message);
+  }
+
+  // 3️⃣ Always fall back to demo data — app is always usable
+  liveStocks=DEMO_STOCKS;
+  badge.className="live-badge loading";
+  const t2=new Date().toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
+  badge.textContent=`📊 Weekend Demo · ${t2}`;
+  renderMarket(liveStocks,true);
+  if(activeTab==="portfolio")renderPortfolio();
+}
+
+function renderMarket(stocks, isDemo=false){
+  if(!stocks.length){document.getElementById("market-content").innerHTML="<div class='loader'>No stocks found.</div>";return;}
+  const topGainers = [...stocks].sort((a,b)=>b.change-a.change).slice(0,3);
+  const topLosers = [...stocks].sort((a,b)=>a.change-b.change).slice(0,3);
+
+  const demoBanner = isDemo ? `<div class="card" style="border-color:#78350f;background:var(--amber-bg);margin-bottom:14px">
+    <p style="color:var(--amber);font-weight:600;margin-bottom:4px">📊 Showing Demo Data</p>
+    <p class="small" style="color:#d97706">Live prices could not load — this happens in Claude's preview sandbox due to network restrictions. <strong>Download the file</strong> and open it in your browser, or host it on Vercel/GitHub Pages to get real PSE live data automatically. Data source: <a href="https://phisix-api3.appspot.com" target="_blank" style="color:var(--amber)">phisix-api3.appspot.com</a></p>
+  </div>` : "";
+
+  let html=`${demoBanner}
+  <div class="stat-grid" style="margin-bottom:14px">
+    <div class="stat-box"><div class="label">Total Stocks</div><div class="value blue" id="stock-count">${stocks.length}</div></div>
+    <div class="stat-box"><div class="label">Advancing</div><div class="value green">${stocks.filter(s=>s.change>0).length}</div></div>
+    <div class="stat-box"><div class="label">Declining</div><div class="value red">${stocks.filter(s=>s.change<0).length}</div></div>
+    <div class="stat-box"><div class="label">Unchanged</div><div class="value">${stocks.filter(s=>s.change===0).length}</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title" style="color:var(--green)">🚀 Top Gainers</div>
+      ${topGainers.map(s=>`<div class="holding-row" style="padding:8px 0">
+        <div class="holding-info"><div class="symbol-tag">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
+        <div class="holding-pnl"><div class="holding-val">${peso(s.price)}</div><div class="holding-change green">${pct(s.change)}</div></div>
+      </div>`).join("")}
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title" style="color:var(--red)">📉 Top Losers</div>
+      ${topLosers.map(s=>`<div class="holding-row" style="padding:8px 0">
+        <div class="holding-info"><div class="symbol-tag">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
+        <div class="holding-pnl"><div class="holding-val">${peso(s.price)}</div><div class="holding-change red">${pct(s.change)}</div></div>
+      </div>`).join("")}
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Symbol</th><th>Name</th><th>Sector</th>
+        <th class="num">Price (₱)</th><th class="num">Change</th><th class="num">Volume</th>
+      </tr></thead>
+      <tbody id="stock-table-body">
+        ${stocks.map(s=>`<tr>
+          <td><span class="symbol-tag">${s.symbol}</span></td>
+          <td><span style="font-size:12px">${s.name}</span></td>
+          <td><span class="badge badge-blue" style="font-size:10px">${s.sector||"—"}</span></td>
+          <td class="num">${s.price>0?peso(s.price):"—"}</td>
+          <td class="num ${s.change>0?"green":s.change<0?"red":"muted"}">${pct(s.change)}</td>
+          <td class="num muted small">${s.volume>0?Number(s.volume).toLocaleString():"—"}</td>
+        </tr>`).join("")}
+      </tbody>
+    </table>
+  </div>`;
+  document.getElementById("market-content").innerHTML=html;
+  buildMarketSectorPills();
+}
+
+function filterStocks(){
+  const q=document.getElementById("stock-search").value.toLowerCase();
+  let filtered=liveStocks.filter(s=>{
+    const matchQ=!q||s.symbol.toLowerCase().includes(q)||s.name.toLowerCase().includes(q);
+    const matchS=marketSectorFilter==="All"||(s.sector||"Other")===marketSectorFilter;
+    return matchQ&&matchS;
+  });
+  const tbody=document.getElementById("stock-table-body");
+  const countEl=document.getElementById("stock-count");
+  if(countEl)countEl.textContent=`${filtered.length} stocks`;
+  if(!tbody)return;
+  tbody.innerHTML=filtered.map(s=>`<tr>
+    <td><span class="symbol-tag">${s.symbol}</span>${s.custom?` <span class="badge badge-amber" style="font-size:10px">custom</span>`:""}</td>
+    <td><span style="font-size:12px">${s.name}</span></td>
+    <td><span class="badge badge-blue" style="font-size:10px">${s.sector||"—"}</span></td>
+    <td class="num">${s.price>0?peso(s.price):"—"}</td>
+    <td class="num ${s.change>0?"green":s.change<0?"red":"muted"}">${pct(s.change)}</td>
+    <td class="num muted small">${s.volume>0?Number(s.volume).toLocaleString():"—"}</td>
+  </tr>`).join("");
+}
+
+// ═══════════════════════════════════════════════
+// PORTFOLIO
+// ═══════════════════════════════════════════════
+function getLivePrice(symbol){
+  const s=liveStocks.find(s=>s.symbol===symbol);
+  return s?s.price:null;
+}
+
+function renderPortfolio(){
+  const stats=portfolio.map(h=>{
+    const lp=getLivePrice(h.symbol);
+    const cp=lp||h.buyPrice;
+    const cost=h.shares*h.buyPrice;
+    const val=h.shares*cp;
+    const gain=val-cost;
+    const gainPct=(gain/cost)*100;
+    return{...h,currentPrice:cp,cost,val,gain,gainPct,hasLive:!!lp};
+  });
+
+  const totalCost=stats.reduce((s,h)=>s+h.cost,0);
+  const totalVal=stats.reduce((s,h)=>s+h.val,0);
+  const totalGain=totalVal-totalCost;
+  const totalPct=totalCost?((totalGain/totalCost)*100):0;
+
+  document.getElementById("stat-cost").textContent=peso(totalCost);
+  document.getElementById("stat-value").textContent=peso(totalVal);
+  const gEl=document.getElementById("stat-gain");
+  gEl.textContent=peso(totalGain);
+  gEl.className="value "+(totalGain>=0?"green":"red");
+  const pEl=document.getElementById("stat-pct");
+  pEl.textContent=pct(totalPct);
+  pEl.className="value "+(totalPct>=0?"green":"red");
+
+  const el=document.getElementById("holdings-list");
+  if(!stats.length){el.innerHTML=`<div class="loader" style="padding:20px;color:var(--text3)">No holdings yet. Add one below.</div>`;return;}
+
+  el.innerHTML=stats.map(h=>`
+    <div class="holding-row">
+      <div class="holding-info">
+        <div class="holding-name">
+          <span class="symbol-tag">${h.symbol}</span>
+          ${!h.hasLive?`<span class="badge badge-amber" style="margin-left:6px">no live price</span>`:""}
+        </div>
+        <div class="holding-sub">${h.shares.toLocaleString()} shares @ ${peso(h.buyPrice)} · ${h.broker.toUpperCase()} · ${h.date||"—"}</div>
+      </div>
+      <div class="holding-pnl">
+        <div class="holding-val">${peso(h.val)}</div>
+        <div class="holding-change ${h.gain>=0?"green":"red"}">${h.gain>=0?"+":""}${peso(h.gain)} (${pct(h.gainPct)})</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="removeHolding(${h.id})">✕</button>
+    </div>
+  `).join("");
+}
+
+function addHolding(){
+  const sym=document.getElementById("add-symbol").value.trim().toUpperCase();
+  const shares=parseFloat(document.getElementById("add-shares").value);
+  const bp=parseFloat(document.getElementById("add-price").value);
+  const date=document.getElementById("add-date").value;
+  const broker=document.getElementById("add-broker").value;
+  if(!sym||isNaN(shares)||isNaN(bp)||shares<=0||bp<=0){alert("Please fill in Symbol, Shares, and Buy Price.");return;}
+  portfolio.push({id:Date.now(),symbol:sym,shares,buyPrice:bp,date,broker});
+  document.getElementById("add-symbol").value="";
+  document.getElementById("add-shares").value="";
+  document.getElementById("add-price").value="";
+  document.getElementById("add-date").value="";
+  renderPortfolio();
+}
+
+function removeHolding(id){
+  portfolio=portfolio.filter(h=>h.id!==id);
+  renderPortfolio();
+}
+
+// ═══════════════════════════════════════════════
+// DIVIDENDS
+// ═══════════════════════════════════════════════
+let liveDividends = [...DIVIDENDS]; // starts with curated data, upgrades to backend
+
+async function initDividends(){
+  const divNote = document.getElementById("div-source-note");
+  // Always start with curated data so table is never empty
+  liveDividends = [...DIVIDENDS];
+  if(BACKEND_URL){
+    try{
+      const json = await apiGet("/api/dividends");
+      if(json.data && json.data.length > 0){
+        const backendSymbols = new Set(json.data.map(d=>d.symbol));
+        const curated = DIVIDENDS.filter(d=>!backendSymbols.has(d.symbol));
+        liveDividends = [...json.data.map(d=>({
+          ...d,
+          sector: d.sector || "General",
+          freq: d.frequency || "Annual",
+          refPrice: getLivePrice(d.symbol) || d.refPrice || 0,
+          fromBackend: true,
+        })), ...curated];
+        if(divNote){
+          divNote.innerHTML=`✅ <strong>Live PSE Edge data</strong> — scraped ${new Date(json.updatedAt).toLocaleString("en-PH")}. <a href="${BACKEND_URL}/api/dividends" target="_blank">View raw →</a>`;
+          divNote.style.cssText="border-left-color:var(--green);background:var(--green-bg);color:var(--green);margin-bottom:12px";
+        }
+      } else {
+        // Backend connected but no scrape data yet — show curated with backend-connected note
+        if(divNote){
+          divNote.innerHTML=`🟡 <strong>Backend connected</strong> — showing curated estimates. PSE Edge scrape runs daily at 7AM PHT. Weekend scrapes may return empty.`;
+          divNote.style.cssText="border-left-color:var(--blue);background:var(--blue-bg);color:#93c5fd;margin-bottom:12px";
+        }
+      }
+    }catch(e){
+      console.warn("Backend dividends unavailable:",e.message);
+      if(divNote){
+        divNote.innerHTML=`⚠️ <strong>Showing curated historical estimates.</strong> Backend unreachable — ${e.message}`;
+      }
+    }
+  }
+  const sectors=["All",...new Set(liveDividends.map(d=>d.sector||"General"))];
+  document.getElementById("sector-pills").innerHTML=sectors.map(s=>
+    `<button class="pill ${s===divSectorFilter?"active":"inactive"}" onclick="filterDivs('${s}')">${s}</button>`
+  ).join("");
+  renderDivTable();
+}
+
+function filterDivs(sector){
+  divSectorFilter=sector;
+  document.querySelectorAll(".pill").forEach(p=>{
+    p.className="pill "+(p.textContent===sector?"active":"inactive");
+  });
+  renderDivTable();
+}
+
+function renderDivTable(){
+  const filtered=liveDividends
+    .filter(d=>divSectorFilter==="All"||d.sector===divSectorFilter)
+    .sort((a,b)=>new Date(a.exDate)-new Date(b.exDate));
+
+  document.getElementById("div-table-body").innerHTML=filtered.map(d=>{
+    const days=daysUntil(d.exDate);
+    const lp=getLivePrice(d.symbol);
+    const refP=lp||d.refPrice;
+    const yld=((d.dps/refP)*100*annualMult(d.freq)).toFixed(2);
+    const isPast=days<0;
+    const isUrgent=days>=0&&days<=14;
+    let countBadge;
+    if(isPast) countBadge=`<span class="badge badge-gray">Passed</span>`;
+    else if(isUrgent) countBadge=`<span class="badge badge-amber">🔔 ${days}d</span>`;
+    else countBadge=`<span class="badge badge-green">${days}d</span>`;
+
+    return`<tr>
+      <td><span class="symbol-tag">${d.symbol}</span><div style="font-size:11px;color:var(--text3)">${d.name}</div></td>
+      <td><span class="badge badge-blue">${d.sector}</span></td>
+      <td class="num green">${peso(d.dps,4)}</td>
+      <td>${d.exDate}</td>
+      <td class="muted small">${d.payDate}</td>
+      <td class="num" style="color:var(--purple)">${yld}%${lp?"":" <span class='muted small'>(est.)</span>"}</td>
+      <td>${countBadge}</td>
+      <td class="muted small">${d.freq}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════
+// CALCULATOR
+// ═══════════════════════════════════════════════
+function setCalcType(type){
+  calcType=type;
+  document.getElementById("type-buy").className=`btn ${type==="buy"?"btn-buy":"btn-outline"}`;
+  document.getElementById("type-sell").className=`btn ${type==="sell"?"btn-sell":"btn-outline"}`;
+  calcFees();
+}
+
+document.getElementById("calc-broker").addEventListener("change",function(){
+  document.getElementById("custom-rate-wrap").style.display=this.value==="custom"?"block":"none";
+});
+
+function calcFees(){
+  const shares=parseFloat(document.getElementById("calc-shares").value);
+  const price=parseFloat(document.getElementById("calc-price").value);
+  const broker=document.getElementById("calc-broker").value;
+  const customRate=parseFloat(document.getElementById("calc-custom-rate").value)||0.0025;
+
+  if(isNaN(shares)||isNaN(price)||shares<=0||price<=0){
+    document.getElementById("fee-result").style.display="none";return;
+  }
+  const f=computeFees(calcType,shares,price,broker,customRate);
+  document.getElementById("fee-result").style.display="block";
+
+  const rows=[
+    {label:"Gross Amount",val:peso(f.amt),highlight:false,bold:false},
+    {label:`Broker Commission (${broker==="custom"?((customRate*100).toFixed(3)):((BROKERS[broker].rate*100).toFixed(2))}%)`,val:peso(f.comm),highlight:false,bold:false},
+    {label:"12% VAT on Commission",val:peso(f.vat),highlight:false,bold:false},
+    {label:"SCCP Fee (0.01%)",val:peso(f.sccp),highlight:false,bold:false},
+    {label:"PSE Trading Fee (0.005%)",val:peso(f.pse),highlight:false,bold:false},
+    ...(calcType==="sell"?[{label:"Stock Transaction Tax — STT (0.6%)",val:peso(f.stt),highlight:true,bold:false}]:[]),
+    {label:"Total Fees",val:peso(f.total),highlight:false,bold:true},
+  ];
+
+  document.getElementById("fee-rows").innerHTML=rows.map(r=>`
+    <div class="fee-row">
+      <span class="fee-label" style="${r.bold?"font-weight:600;color:var(--text)":""}${r.highlight?";color:var(--amber)":""}">${r.label}</span>
+      <span class="fee-val" style="${r.bold?"color:var(--text)":""}">${r.val}</span>
+    </div>
+  `).join("");
+
+  const label=calcType==="buy"?"Total Cost (Gross + Fees)":"Net Proceeds (Gross − Fees)";
+  document.getElementById("fee-total-label").textContent=label;
+  document.getElementById("fee-total-val").textContent=peso(f.net);
+  document.getElementById("fee-total-box").style.background=calcType==="buy"?"var(--blue-bg)":"var(--green-bg)";
+  document.getElementById("fee-total-val").style.color=calcType==="buy"?"var(--blue)":"var(--green)";
+  document.getElementById("fee-total-label").style.color=calcType==="buy"?"#93c5fd":"#86efac";
+
+  const effRate=((f.total/f.amt)*100).toFixed(4);
+  document.getElementById("fee-note").textContent=`Effective fee rate: ${effRate}% of gross amount. ${calcType==="sell"?"STT (Stock Transaction Tax) is only applied on SELL transactions.":"No STT on buy transactions."}`;
+}
+
+// ═══════════════════════════════════════════════
+// AI NEWS
+// ═══════════════════════════════════════════════
+async function loadNews(custom=false){
+  const btn=document.getElementById("news-refresh-btn");
+  const container=document.getElementById("news-content");
+  const topic=document.getElementById("news-topic").value.trim();
+  const query=custom&&topic?topic:"";
+  btn.textContent="⟳ Fetching...";btn.disabled=true;
+  container.innerHTML=`<div class="loader"><span class="spinner"></span>Claude AI is searching for latest PSE news...</div>`;
+  try{
+    if(!BACKEND_URL) throw new Error("No backend configured. Set BACKEND_URL in the HTML file.");
+    const res=await fetch(`${BACKEND_URL}/api/news`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({topic:query})
+    });
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error||"Backend error");
+    const articles=data.articles||[];
+    const sentColor={bullish:"var(--green)",bearish:"var(--red)",neutral:"var(--amber)"};
+    const sentBg={bullish:"var(--green-bg)",bearish:"var(--red-bg)",neutral:"var(--amber-bg)"};
+    const sentEmoji={bullish:"📈",bearish:"📉",neutral:"➡️"};
+    container.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <p class="small muted">Powered by Claude AI + live web search · ${new Date().toLocaleString("en-PH")}</p>
+      </div>
+      <div style="display:grid;gap:12px">
+        ${articles.map(a=>`
+        <div class="card" style="margin-bottom:0;border-color:${sentColor[a.sentiment]||"var(--border)"}20">
+          <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+            <span style="font-size:11px;padding:3px 8px;border-radius:20px;background:${sentBg[a.sentiment]||"var(--surface2)"};color:${sentColor[a.sentiment]||"var(--text2)"};white-space:nowrap">
+              ${sentEmoji[a.sentiment]||"➡️"} ${(a.sentiment||"neutral").toUpperCase()}
+            </span>
+            <span class="badge badge-blue">${a.category||"General"}</span>
+            <span class="small muted" style="margin-left:auto">${a.source||"—"}</span>
+          </div>
+          <p style="font-weight:600;font-size:14px;margin-bottom:8px;line-height:1.4">${a.title}</p>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5">${a.summary}</p>
+          <div style="border-top:1px solid var(--border);padding-top:8px;font-size:11px;color:var(--teal)">
+            💡 ${a.relevance}
+          </div>
+        </div>`).join("")}
+      </div>`;
+  }catch(e){
+    container.innerHTML=`<div class="card" style="border-color:#7f1d1d;background:#1c0303">
+      <p style="color:var(--red);margin-bottom:6px">⚠️ Could not load news</p>
+      <p class="small muted">${e.message}</p>
+      ${e.message.includes("ANTHROPIC_API_KEY")?`<p class="small" style="color:var(--amber);margin-top:6px">👉 Add your ANTHROPIC_API_KEY in Railway Variables — see instructions below.</p>`:""}
+    </div>`;
+  }
+  btn.textContent="🔍 Fetch Latest News";btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════════
+// AI PICKS
+// ═══════════════════════════════════════════════
+async function loadPicks(strategy){
+  const container=document.getElementById("picks-content");
+  const stratColors={GROWTH:"var(--blue)",VALUE:"var(--green)",MOAT:"var(--purple)",DIVIDENDS:"var(--amber)"};
+  const stratBg={GROWTH:"var(--blue-bg)",VALUE:"var(--green-bg)",MOAT:"var(--purple-bg)",DIVIDENDS:"var(--amber-bg)"};
+  const stratText={GROWTH:"#93c5fd",VALUE:"#86efac",MOAT:"#c4b5fd",DIVIDENDS:"#fcd34d"};
+  const stratEmoji={GROWTH:"🚀",VALUE:"💎",MOAT:"🏰",DIVIDENDS:"💰"};
+  container.innerHTML=`<div class="loader"><span class="spinner"></span>Claude AI is analyzing PSE stocks for ${strategy} strategy...</div>`;
+  try{
+    if(!BACKEND_URL) throw new Error("No backend configured.");
+    const res=await fetch(`${BACKEND_URL}/api/picks`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({strategy})
+    });
+    const result=await res.json();
+    if(!res.ok) throw new Error(result.error||"Backend error");
+    const ratingColor=r=>r==="Strong Buy"?"var(--green)":r==="Buy"?"#4ade80":r==="Hold"?"var(--amber)":"var(--red)";
+    const ratingBg=r=>r==="Strong Buy"?"var(--green-bg)":r==="Buy"?"#052e16":r==="Hold"?"var(--amber-bg)":"var(--red-bg)";
+    container.innerHTML=`
+      <div class="card" style="border-color:${stratColors[strategy]}30;background:${stratBg[strategy]}">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:24px">${stratEmoji[strategy]}</span>
+          <span style="font-size:15px;font-weight:600;color:${stratText[strategy]}">${strategy} Strategy</span>
+        </div>
+        <p style="font-size:13px;color:${stratText[strategy]};opacity:.85;margin-bottom:8px">${result.summary}</p>
+        ${result.marketContext?`<p style="font-size:12px;color:${stratText[strategy]};opacity:.65;border-top:1px solid ${stratColors[strategy]}30;padding-top:8px">🇵🇭 PSE Context: ${result.marketContext}</p>`:""}
+      </div>
+      <div style="display:grid;gap:10px;margin-bottom:14px">
+        ${(result.picks||[]).map(p=>`
+        <div class="card" style="margin-bottom:0">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <div>
+              <span class="symbol-tag" style="font-size:15px">${p.symbol}</span>
+              <span style="color:var(--text2);font-size:13px;margin-left:8px">${p.name}</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:${ratingBg(p.rating)};color:${ratingColor(p.rating)};font-weight:600">${p.rating||"—"}</span>
+              ${p.targetUpside?`<span style="font-size:12px;color:var(--green);font-family:var(--font-num)">${p.targetUpside}</span>`:""}
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">${p.thesis}</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${p.keyMetric?`<span class="badge badge-blue">${p.keyMetric}</span>`:""}
+            ${p.moatType?`<span class="badge" style="background:var(--purple-bg);color:#c4b5fd">${p.moatType}</span>`:""}
+          </div>
+          ${p.risk?`<p style="font-size:11px;color:var(--red);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">⚠️ Risk: ${p.risk}</p>`:""}
+        </div>`).join("")}
+      </div>
+      ${result.avoid&&result.avoid.length?`
+      <div class="card" style="border-color:#7f1d1d30;background:#1c030310;margin-bottom:0">
+        <div class="card-title" style="color:var(--red)">Stocks to Avoid for ${strategy}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          ${result.avoid.map(s=>`<span class="badge badge-red">${s}</span>`).join("")}
+        </div>
+        <p style="font-size:12px;color:var(--text3)">${result.avoidReason||""}</p>
+      </div>`:""}
+      <div class="note" style="margin-top:12px">🤖 Generated by Claude AI with web search on ${new Date().toLocaleString("en-PH")}. Not financial advice. DYOR.</div>`;
+  }catch(e){
+    container.innerHTML=`<div class="card" style="border-color:#7f1d1d;background:#1c0303">
+      <p style="color:var(--red);margin-bottom:6px">⚠️ Could not load AI picks</p>
+      <p class="small muted">${e.message}</p>
+      ${e.message.includes("ANTHROPIC_API_KEY")?`<p class="small" style="color:var(--amber);margin-top:6px">👉 Add ANTHROPIC_API_KEY in Railway → Variables tab.</p>`:""}
+    </div>`;
+  }
+}
+// ═══════════════════════════════════════════════
+// AUTO-REFRESH ENGINE + PHT CLOCK
+// ═══════════════════════════════════════════════
+const REFRESH_INTERVAL = 5 * 60;
+let autoRefreshOn = true;
+let secondsUntilRefresh = REFRESH_INTERVAL;
+let countdownTimer = null;
+
+function isPSEOpen(){
+  const now = new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Manila"}));
+  const day = now.getDay();
+  const mins = now.getHours()*60+now.getMinutes();
+  const isWeekday = day>=1&&day<=5;
+  if(!isWeekday) return{open:false,label:"⛔ Weekend — Closed",color:"var(--text3)"};
+  if(mins>=540&&mins<570) return{open:false,label:"🔔 Pre-Open 9:00–9:30",color:"var(--amber)"};
+  if(mins>=570&&mins<930) return{open:true, label:"🟢 Market Open",color:"var(--green)"};
+  if(mins>=930&&mins<960) return{open:false,label:"🔔 Post-Market",color:"var(--amber)"};
+  return{open:false,label:"⛔ Market Closed",color:"var(--text3)"};
+}
+
+function updateClock(){
+  const now = new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Manila"}));
+  const ts = now.toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  const ds = now.toLocaleDateString("en-PH",{weekday:"short",month:"short",day:"numeric"});
+  const el = document.getElementById("pse-clock");
+  if(el) el.textContent=`🇵🇭 PHT ${ts} · ${ds}`;
+  const mh = isPSEOpen();
+  const mhEl = document.getElementById("market-hours-badge");
+  if(mhEl){mhEl.textContent=mh.label;mhEl.style.cssText+=`;color:${mh.color};border-color:${mh.color};background:transparent`;}
+}
+
+function startCountdown(){
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(()=>{
+    updateClock();
+    if(!autoRefreshOn){
+      const el=document.getElementById("next-refresh-label");
+      if(el) el.textContent="Auto-refresh: OFF";
+      return;
+    }
+    secondsUntilRefresh--;
+    const m=Math.floor(secondsUntilRefresh/60), s=secondsUntilRefresh%60;
+    const el=document.getElementById("next-refresh-label");
+    if(el) el.textContent=`Next refresh: ${m}m ${s.toString().padStart(2,"0")}s`;
+    if(secondsUntilRefresh<=0){
+      secondsUntilRefresh=REFRESH_INTERVAL;
+      loadMarket();
+      if(activeTab==="portfolio") renderPortfolio();
+    }
+  },1000);
+}
+
+function toggleAutoRefresh(){
+  autoRefreshOn=!autoRefreshOn;
+  const btn=document.getElementById("ar-btn");
+  if(autoRefreshOn){
+    btn.textContent="⏸ Auto: ON";
+    secondsUntilRefresh=REFRESH_INTERVAL;
+  } else {
+    btn.textContent="▶ Auto: OFF";
+  }
+}
+
+initDividends();
+renderPortfolio();
+loadMarket();
+startCountdown();
+</script>
+</body>
+</html>
