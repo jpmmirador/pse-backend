@@ -1,233 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>PSE Investor Hub 🇵🇭</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#060d1a;--surface:#0c1729;--surface2:#112039;--surface3:#152847;
-  --border:#1e3355;--border2:#254268;
-  --blue:#3b82f6;--blue-dim:#1d4ed8;--blue-bg:#0d2244;
-  --green:#22c55e;--green-bg:#052e16;
-  --red:#ef4444;--red-bg:#2d0606;
-  --amber:#f59e0b;--amber-bg:#231700;
-  --purple:#a78bfa;--purple-bg:#1e0c3d;
+  --bg:#070f1c;
+  --surface:#0b1628;
+  --surface2:#0f1e36;
+  --surface3:#132440;
+  --border:#162d52;
+  --border2:#1d3d6e;
+  --accent:#0ea5e9;
+  --accent2:#38bdf8;
+  --accent-bg:rgba(14,165,233,.08);
+  --green:#10b981;--green-bg:rgba(16,185,129,.08);
+  --red:#f43f5e;--red-bg:rgba(244,63,94,.08);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.08);
+  --purple:#8b5cf6;--purple-bg:rgba(139,92,246,.08);
   --teal:#14b8a6;
-  --text:#e8f0fe;--text2:#94a3b8;--text3:#4a6080;
-  --num:var(--blue);
-  --font-ui:'DM Sans',sans-serif;
-  --font-num:'IBM Plex Mono',monospace;
+  --text:#e2eaf8;--text2:#7a94b8;--text3:#374f6e;
+  --font-ui:'Outfit',sans-serif;
+  --font-num:'JetBrains Mono',monospace;
+  --r:8px;--r2:12px;--r3:16px;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-ui);font-size:14px;min-height:100vh;line-height:1.5}
-a{color:var(--blue);text-decoration:none}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent2)}
 
 /* HEADER */
 .header{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  padding:0 24px;height:60px;
   background:var(--surface);
   border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px)
 }
-.logo-badge{
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:36px;height:36px;border-radius:10px;
   background:linear-gradient(135deg,#dc2626,#1d4ed8);
-  border-radius:10px;padding:8px 10px;font-size:20px;line-height:1
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0
 }
-.logo-text h1{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-0.3px}
-.logo-text p{font-size:11px;color:var(--text3)}
-.live-badge{
-  margin-left:auto;font-size:11px;font-family:var(--font-num);
-  padding:4px 10px;border-radius:20px;
-  background:var(--green-bg);color:var(--green);border:1px solid #166534
+.logo-text h1{font-size:15px;font-weight:700;letter-spacing:-.3px;color:var(--text)}
+.logo-text p{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hbadge{
+  font-size:10px;font-family:var(--font-num);
+  padding:4px 10px;border-radius:20px;border:1px solid;white-space:nowrap
 }
-.live-badge.offline{background:#1c0303;color:#f87171;border-color:#7f1d1d}
-.live-badge.loading{background:var(--amber-bg);color:var(--amber);border-color:#78350f}
+.hbadge-red{color:var(--red);border-color:var(--red);background:var(--red-bg)}
+.hbadge-green{color:var(--green);border-color:var(--green);background:var(--green-bg)}
+.hbadge-amber{color:var(--amber);border-color:var(--amber);background:var(--amber-bg)}
+.hbadge-blue{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
+.ar-btn{
+  background:transparent;border:1px solid var(--border2);
+  border-radius:6px;padding:4px 10px;font-size:10px;
+  color:var(--text2);cursor:pointer;font-family:var(--font-ui);
+  transition:all .15s
+}
+.ar-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* STATUS BAR */
+.status-bar{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:6px 24px;
+  display:flex;gap:20px;flex-wrap:wrap;
+  font-size:11px;color:var(--text3);align-items:center
+}
+.status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px;flex-shrink:0}
+.sd-green{background:var(--green)}
+.sd-amber{background:var(--amber)}
+.status-item{display:flex;align-items:center}
+.status-refresh{margin-left:auto;font-family:var(--font-num);color:var(--text3)}
+
+/* SPONSOR BAR */
+.sponsor-bar{
+  background:linear-gradient(90deg,rgba(14,165,233,.05),rgba(139,92,246,.05));
+  border-bottom:1px solid var(--border);
+  padding:8px 24px;
+  display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap
+}
+.sponsor-label{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.sponsor-link{
+  font-size:11px;color:var(--accent2);
+  padding:4px 14px;border:1px solid var(--border2);
+  border-radius:20px;background:var(--accent-bg);
+  transition:all .2s;white-space:nowrap
+}
+.sponsor-link:hover{background:rgba(14,165,233,.15);border-color:var(--accent);color:#fff}
+.sponsor-link-gold{
+  font-size:11px;color:var(--amber);
+  padding:4px 14px;border:1px solid rgba(245,158,11,.3);
+  border-radius:20px;background:var(--amber-bg);
+  transition:all .2s;white-space:nowrap
+}
+.sponsor-link-gold:hover{background:rgba(245,158,11,.15)}
 
 /* TABS */
-.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;gap:2px;padding:0 16px}
+.tabs{
+  display:flex;background:var(--surface);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;padding:0 20px;gap:0;
+  scrollbar-width:none
+}
+.tabs::-webkit-scrollbar{display:none}
 .tab-btn{
-  padding:12px 18px;background:none;border:none;
+  padding:0 20px;height:48px;background:none;border:none;
   color:var(--text3);cursor:pointer;font-size:13px;font-family:var(--font-ui);
   border-bottom:2px solid transparent;white-space:nowrap;
-  transition:color .15s,border-color .15s;font-weight:500
+  transition:all .2s;font-weight:500;display:flex;align-items:center;gap:6px;
+  position:relative
 }
 .tab-btn:hover{color:var(--text2)}
-.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:rgba(59,130,246,.06)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn.active::before{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;
+  background:var(--accent);border-radius:2px 2px 0 0;
+  box-shadow:0 0 12px var(--accent)
+}
 
 /* PANELS */
-.panel{display:none;padding:16px;max-width:960px;margin:0 auto}
+.panel{display:none;padding:20px;max-width:980px;margin:0 auto;animation:fadeIn .2s ease}
 .panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* CARDS */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
-.card-title{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:18px;margin-bottom:14px;
+  transition:border-color .2s
+}
+.card:hover{border-color:var(--border2)}
+.card-title{
+  font-size:10px;font-weight:600;color:var(--text3);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px
+}
+.card-title::before{content:'';width:3px;height:12px;background:var(--accent);border-radius:2px;display:inline-block}
 
 /* STAT GRID */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
-.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
-.stat-box .label{font-size:11px;color:var(--text3);margin-bottom:6px}
-.stat-box .value{font-size:20px;font-weight:600;font-family:var(--font-num)}
+.stat-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px 16px;
+  transition:all .2s;cursor:default
+}
+.stat-box:hover{border-color:var(--border2);background:var(--surface3)}
+.stat-box .label{font-size:10px;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.stat-box .value{font-size:22px;font-weight:600;font-family:var(--font-num);letter-spacing:-1px}
 .stat-box .value.green{color:var(--green)}
 .stat-box .value.red{color:var(--red)}
-.stat-box .value.blue{color:var(--blue)}
+.stat-box .value.blue{color:var(--accent)}
 .stat-box .value.amber{color:var(--amber)}
 
 /* INPUTS */
 input,select{
-  width:100%;padding:9px 12px;
+  width:100%;padding:10px 14px;
   background:var(--surface2);border:1px solid var(--border);
-  border-radius:8px;color:var(--text);font-family:var(--font-ui);font-size:13px;
-  transition:border-color .15s;outline:none
+  border-radius:var(--r);color:var(--text);font-family:var(--font-ui);font-size:13px;
+  transition:all .2s;outline:none
 }
-input:focus,select:focus{border-color:var(--blue)}
+input:focus,select:focus{border-color:var(--accent);background:var(--surface3);box-shadow:0 0 0 3px rgba(14,165,233,.1)}
 input::placeholder{color:var(--text3)}
 select option{background:var(--surface2)}
 .input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.input-label{font-size:11px;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
 
 /* BUTTONS */
 .btn{
-  padding:9px 16px;border-radius:8px;border:none;cursor:pointer;
-  font-family:var(--font-ui);font-size:13px;font-weight:500;transition:opacity .15s,transform .1s
+  padding:10px 18px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:var(--font-ui);font-size:13px;font-weight:500;
+  transition:all .15s;display:inline-flex;align-items:center;gap:6px
 }
-.btn:hover{opacity:.9}
 .btn:active{transform:scale(.98)}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-danger{background:var(--red);color:#fff;padding:5px 10px;font-size:12px}
-.btn-buy{background:#166534;color:#bbf7d0}
-.btn-sell{background:#7f1d1d;color:#fecaca}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
-.btn-sm{padding:4px 10px;font-size:12px}
-.toggle-row{display:flex;gap:8px;margin-bottom:12px}
-.toggle-row button{flex:1}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid rgba(244,63,94,.3);padding:4px 10px;font-size:11px}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-buy{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.btn-buy:hover{background:var(--green);color:#fff}
+.btn-sell{background:var(--red-bg);color:var(--red);border:1px solid rgba(244,63,94,.3)}
+.btn-sell:hover{background:var(--red);color:#fff}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:5px 12px;font-size:11px}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap input{padding-left:38px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;pointer-events:none}
 
 /* TABLES */
-.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+.tbl-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead tr{background:var(--surface2)}
-th{padding:10px 14px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:11px 14px;border-bottom:1px solid var(--border)}
+th{
+  padding:11px 14px;text-align:left;color:var(--text3);
+  font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.6px;
+  border-bottom:1px solid var(--border);white-space:nowrap
+}
+td{padding:12px 14px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(14,165,233,.04)}
 .num{font-family:var(--font-num);text-align:right}
-.symbol-tag{font-weight:600;color:var(--blue);font-family:var(--font-num)}
+.sym{font-weight:700;color:var(--accent);font-family:var(--font-num);font-size:12px;letter-spacing:.5px}
 .green{color:var(--green)}
 .red{color:var(--red)}
 .amber{color:var(--amber)}
 .muted{color:var(--text3)}
 .small{font-size:11px}
 
-/* SEARCH BAR */
-.search-bar{position:relative;margin-bottom:14px}
-.search-bar input{padding-left:36px}
-.search-bar::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
-
 /* PILLS */
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:none;font-family:var(--font-ui)}
+.pill{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:500;cursor:pointer;border:none;
+  font-family:var(--font-ui);transition:all .15s
+}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.pill.active{background:var(--blue);color:#fff}
+.pill.active{background:var(--accent);color:#fff;box-shadow:0 0 10px rgba(14,165,233,.3)}
 .pill.inactive{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.pill.inactive:hover{border-color:var(--border2);color:var(--text)}
 
-/* BADGE */
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-family:var(--font-num)}
-.badge-green{background:var(--green-bg);color:var(--green)}
-.badge-red{background:var(--red-bg);color:var(--red)}
-.badge-amber{background:var(--amber-bg);color:var(--amber)}
-.badge-blue{background:var(--blue-bg);color:#93c5fd}
-.badge-gray{background:var(--surface2);color:var(--text3)}
-
-/* FEE BREAKDOWN */
-.fee-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
-.fee-row:last-child{border-bottom:none}
-.fee-row .fee-label{color:var(--text2);font-size:13px}
-.fee-row .fee-val{font-family:var(--font-num);font-size:13px}
-.fee-total{background:var(--blue-bg);border-radius:10px;padding:14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center}
-.fee-total .label{font-size:13px;color:#93c5fd}
-.fee-total .value{font-size:20px;font-weight:600;font-family:var(--font-num);color:var(--blue)}
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:500;font-family:var(--font-num)}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.badge-blue{background:var(--accent-bg);color:var(--accent2);border:1px solid rgba(14,165,233,.2)}
+.badge-gray{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.badge-purple{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(139,92,246,.2)}
 
 /* HOLDING ROW */
-.holding-row{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.holding-row{
+  display:flex;align-items:center;padding:14px 0;
+  border-bottom:1px solid var(--border);gap:14px;
+  transition:background .15s
+}
 .holding-row:last-child{border-bottom:none}
+.holding-row:hover{background:rgba(14,165,233,.03);margin:0 -18px;padding:14px 18px}
 .holding-info{flex:1}
-.holding-name{font-weight:600;font-size:13px}
+.holding-name{font-weight:600;font-size:14px;margin-bottom:2px}
 .holding-sub{font-size:11px;color:var(--text3);font-family:var(--font-num)}
 .holding-pnl{text-align:right}
-.holding-val{font-family:var(--font-num);font-weight:500}
-.holding-change{font-family:var(--font-num);font-size:11px}
+.holding-val{font-family:var(--font-num);font-weight:600;font-size:15px}
+.holding-change{font-family:var(--font-num);font-size:11px;margin-top:2px}
+
+/* FEE BREAKDOWN */
+.fee-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border)
+}
+.fee-row:last-child{border-bottom:none}
+.fee-label{color:var(--text2);font-size:13px}
+.fee-val{font-family:var(--font-num);font-size:13px;color:var(--text)}
+.fee-total{
+  background:var(--accent-bg);border:1px solid rgba(14,165,233,.2);
+  border-radius:var(--r);padding:16px;margin-top:14px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.fee-total-sell{background:var(--green-bg);border-color:rgba(16,185,129,.2)}
+
+/* TOGGLE */
+.toggle-row{display:flex;gap:8px;margin-bottom:14px}
+.toggle-row button{flex:1;justify-content:center}
 
 /* LOADER */
-.loader{text-align:center;padding:40px;color:var(--text3);font-size:13px}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+.loader{text-align:center;padding:50px;color:var(--text3);font-size:13px}
+.spinner{
+  display:inline-block;width:18px;height:18px;
+  border:2px solid var(--border);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .6s linear infinite;
+  margin-right:8px;vertical-align:middle
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* NOTES */
-.note{font-size:11px;color:var(--text3);margin-top:10px;padding:10px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--border2)}
+/* NOTE */
+.note{
+  font-size:11px;color:var(--text3);margin-top:10px;padding:10px 14px;
+  background:var(--surface2);border-radius:var(--r);
+  border-left:3px solid var(--border2);line-height:1.6
+}
+.note-amber{border-left-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.note-green{border-left-color:var(--green);background:var(--green-bg);color:var(--green)}
+.note-blue{border-left-color:var(--accent);background:var(--accent-bg);color:var(--accent2)}
+.note-red{border-left-color:var(--red);background:var(--red-bg);color:var(--red)}
 
-/* MOBILE IMPROVEMENTS */
+/* STRATEGY CARDS */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.strat-card{
+  border:1px solid var(--border);border-radius:var(--r2);
+  padding:18px;cursor:pointer;transition:all .2s;background:var(--surface2)
+}
+.strat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.strat-card .strat-icon{font-size:24px;margin-bottom:10px}
+.strat-card .strat-name{font-weight:700;font-size:14px;margin-bottom:4px}
+.strat-card .strat-desc{font-size:11px;color:var(--text3);line-height:1.4}
+.strat-card.growth{border-color:rgba(14,165,233,.3);background:rgba(14,165,233,.05)}
+.strat-card.growth:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(14,165,233,.15)}
+.strat-card.value{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.05)}
+.strat-card.value:hover{border-color:var(--green);box-shadow:0 8px 24px rgba(16,185,129,.15)}
+.strat-card.moat{border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.05)}
+.strat-card.moat:hover{border-color:var(--purple);box-shadow:0 8px 24px rgba(139,92,246,.15)}
+.strat-card.dividends{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
+.strat-card.dividends:hover{border-color:var(--amber);box-shadow:0 8px 24px rgba(245,158,11,.15)}
+
+/* PICK CARD */
+.pick-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r2);padding:18px;margin-bottom:10px;
+  transition:border-color .2s
+}
+.pick-card:hover{border-color:var(--border2)}
+
+/* NEWS CARD */
+.news-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r2);padding:16px;margin-bottom:10px;
+  transition:all .2s
+}
+.news-card:hover{border-color:var(--border2);background:var(--surface3)}
+
+/* CUSTOM ADD */
+.custom-add-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r2);padding:18px;margin-bottom:14px;
+  animation:fadeIn .2s ease
+}
+
+/* RESPONSIVE */
 @media(max-width:600px){
-  .header{padding:10px 12px;gap:10px}
-  .logo-badge{font-size:16px;padding:6px 8px}
-  .logo-text h1{font-size:14px}
-  .live-badge{font-size:10px;padding:3px 8px}
-  .tabs{padding:0 8px;gap:0}
-  .tab-btn{padding:10px 10px;font-size:11px}
-  .panel{padding:10px}
+  .header{padding:0 14px;gap:8px}
+  .logo-text p{display:none}
+  .panel{padding:12px}
   .stat-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .stat-box .value{font-size:16px}
+  .stat-box .value{font-size:18px}
   .input-grid{grid-template-columns:1fr}
-  .toggle-row{gap:6px}
-  th,td{padding:8px 8px;font-size:12px}
-  .card{padding:12px}
-  .holding-row{flex-wrap:wrap;gap:8px}
-  .fee-total .value{font-size:16px}
+  .strategy-grid{grid-template-columns:1fr 1fr}
+  .status-bar{padding:6px 14px;gap:10px}
+  .tabs{padding:0 10px}
+  .tab-btn{padding:0 12px;font-size:12px}
+  th,td{padding:9px 10px;font-size:12px}
 }
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
-<div class="header" style="flex-wrap:wrap;gap:10px">
-  <div class="logo-badge">🇵🇭</div>
-  <div class="logo-text">
-    <h1>PSE Investor Hub</h1>
-    <p id="pse-clock" style="font-family:var(--font-num);font-size:11px;color:var(--text3)">Loading time...</p>
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">🇵🇭</div>
+    <div class="logo-text">
+      <h1>PSE Investor Hub</h1>
+      <p id="pse-clock">Loading...</p>
+    </div>
   </div>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <span id="market-hours-badge" class="live-badge" style="font-size:10px">—</span>
-    <span class="live-badge loading" id="live-badge">⟳ Loading...</span>
-    <button onclick="toggleAutoRefresh()" id="ar-btn" class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 10px">⏸ Auto: ON</button>
+  <div class="header-right">
+    <span id="market-hours-badge" class="hbadge hbadge-red">— Market</span>
+    <span id="live-badge" class="hbadge hbadge-amber">⟳ Loading</span>
+    <button class="ar-btn" id="ar-btn" onclick="toggleAutoRefresh()">⏸ Auto: ON</button>
   </div>
 </div>
-<!-- DATA STATUS BAR -->
-<div id="status-bar" style="background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 20px;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--text3);align-items:center">
-  <span>🟢 <strong style="color:var(--text2)">Market prices:</strong> Live via phisix-api3 (when hosted)</span>
-  <span>🟡 <strong style="color:var(--text2)">Dividends:</strong> Historical estimates — not real-time</span>
-  <span>🟢 <strong style="color:var(--text2)">News & AI Picks:</strong> Live web search on demand</span>
-  <span id="next-refresh-label" style="margin-left:auto">Next refresh: —</span>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span class="status-item"><span class="status-dot sd-green"></span><strong style="color:var(--text2)">Prices:</strong>&nbsp;Live via phisix-api3</span>
+  <span class="status-item"><span class="status-dot sd-amber"></span><strong style="color:var(--text2)">Dividends:</strong>&nbsp;Historical estimates</span>
+  <span class="status-item"><span class="status-dot sd-green"></span><strong style="color:var(--text2)">News & AI:</strong>&nbsp;On demand</span>
+  <span class="status-refresh" id="next-refresh-label">Next refresh: —</span>
 </div>
 
 <!-- ADSTERRA NATIVE BANNER -->
-<div style="max-width:960px;margin:10px auto;padding:0 16px">
+<div style="max-width:980px;margin:8px auto;padding:0 20px">
 <script async="async" data-cfasync="false" src="https://pl28956807.profitablecpmratenetwork.com/939ecbc33915c868c85206044a16e47b/invoke.js"></script>
 <div id="container-939ecbc33915c868c85206044a16e47b"></div>
 </div>
 
-<!-- SMARTLINK PARTNER BAR -->
-<div style="background:#0c1729;border-bottom:1px solid #1e3355;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
-  <span style="font-size:11px;color:#4a6080">📢 Sponsored</span>
-  <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" rel="noopener"
-    style="font-size:12px;color:#3b82f6;text-decoration:none;padding:5px 14px;border:1px solid #1e3355;border-radius:20px;background:#0d2244;transition:opacity.2s"
-    onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-    💰 Best Investment Offers for Filipino Investors →
-  </a>
-  <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" rel="noopener"
-    style="font-size:12px;color:#22c55e;text-decoration:none;padding:5px 14px;border:1px solid #166534;border-radius:20px;background:#052e16;transition:opacity.2s"
-    onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-    📈 Stock Market Tools & Resources →
-  </a>
+<!-- SPONSOR BAR -->
+<div class="sponsor-bar">
+  <span class="sponsor-label">Sponsored</span>
+  <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" class="sponsor-link">💰 Best Investment Offers for Filipino Investors →</a>
+  <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" class="sponsor-link-gold">📈 Exclusive Stock Market Tools →</a>
 </div>
 
 <!-- TABS -->
@@ -235,54 +396,48 @@ tbody tr:hover{background:rgba(255,255,255,.02)}
   <button class="tab-btn active" onclick="switchTab('market')">📈 Market</button>
   <button class="tab-btn" onclick="switchTab('portfolio')">💼 Portfolio</button>
   <button class="tab-btn" onclick="switchTab('dividends')">💰 Dividends</button>
-  <button class="tab-btn" onclick="switchTab('news')">📰 PSE News</button>
+  <button class="tab-btn" onclick="switchTab('news')">📰 News</button>
   <button class="tab-btn" onclick="switchTab('picks')">🤖 AI Picks</button>
   <button class="tab-btn" onclick="switchTab('calculator')">🧮 Fees</button>
 </div>
 
-<!-- ═══ MARKET PANEL ═══ -->
+<!-- MARKET PANEL -->
 <div class="panel active" id="panel-market">
-  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-    <div class="search-bar" style="flex:1;min-width:200px;margin-bottom:0">
-      <input type="text" id="stock-search" placeholder="Search by symbol or name... (e.g. BDO, Jollibee)" oninput="filterStocks()" />
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <div class="search-wrap" style="flex:1;min-width:200px;margin-bottom:0">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="stock-search" placeholder="Search stocks by symbol or name..." oninput="filterStocks()"/>
     </div>
-    <button class="btn btn-outline btn-sm" onclick="toggleCustomAdd()" id="custom-add-btn" style="white-space:nowrap">+ Add Custom Stock</button>
+    <button class="btn btn-outline btn-sm" onclick="toggleCustomAdd()" id="custom-add-btn">+ Custom Stock</button>
   </div>
-
-  <div id="custom-add-box" style="display:none" class="card">
-    <div class="card-title">Add Any Stock Manually</div>
-    <p class="small muted" style="margin-bottom:10px">If a stock isn't listed, add it here. Price will update from live data when you host the app.</p>
+  <div id="custom-add-box" style="display:none" class="custom-add-box">
+    <div class="card-title">Add Custom Stock</div>
     <div class="input-grid">
-      <input type="text" id="custom-symbol" placeholder="Symbol (e.g. DITO)" style="text-transform:uppercase" />
-      <input type="text" id="custom-name" placeholder="Company Name" />
-      <input type="number" id="custom-price" placeholder="Last Known Price (₱)" step="0.01" />
-      <select id="custom-sector">
-        <option value="Banking">Banking</option>
-        <option value="Property">Property</option>
-        <option value="Consumer">Consumer</option>
-        <option value="REIT">REIT</option>
-        <option value="Telco">Telco</option>
-        <option value="Mining">Mining</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Conglomerate">Conglomerate</option>
-        <option value="Industrial">Industrial</option>
-        <option value="Financial">Financial</option>
-        <option value="Technology">Technology</option>
-        <option value="Oil & Gas">Oil & Gas</option>
-        <option value="Other">Other</option>
-      </select>
+      <div><div class="input-label">Symbol</div><input type="text" id="custom-symbol" placeholder="e.g. DITO" style="text-transform:uppercase"/></div>
+      <div><div class="input-label">Company Name</div><input type="text" id="custom-name" placeholder="Company Name"/></div>
+      <div><div class="input-label">Last Price (₱)</div><input type="number" id="custom-price" placeholder="0.00" step="0.01"/></div>
+      <div><div class="input-label">Sector</div>
+        <select id="custom-sector">
+          <option value="Banking">Banking</option><option value="Property">Property</option>
+          <option value="Consumer">Consumer</option><option value="REIT">REIT</option>
+          <option value="Telco">Telco</option><option value="Mining">Mining</option>
+          <option value="Utilities">Utilities</option><option value="Conglomerate">Conglomerate</option>
+          <option value="Industrial">Industrial</option><option value="Financial">Financial</option>
+          <option value="Technology">Technology</option><option value="Oil & Gas">Oil & Gas</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:10px">
+    <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn btn-primary" onclick="addCustomStock()">Add to Watchlist</button>
       <button class="btn btn-outline" onclick="toggleCustomAdd()">Cancel</button>
     </div>
   </div>
-
   <div class="pill-row" id="market-sector-pills"></div>
   <div id="market-content"><div class="loader"><span class="spinner"></span>Fetching PSE data...</div></div>
 </div>
 
-<!-- ═══ PORTFOLIO PANEL ═══ -->
+<!-- PORTFOLIO PANEL -->
 <div class="panel" id="panel-portfolio">
   <div class="stat-grid" id="portfolio-stats">
     <div class="stat-box"><div class="label">Total Cost</div><div class="value blue" id="stat-cost">₱0.00</div></div>
@@ -290,139 +445,120 @@ tbody tr:hover{background:rgba(255,255,255,.02)}
     <div class="stat-box"><div class="label">Unrealized G/L</div><div class="value" id="stat-gain">₱0.00</div></div>
     <div class="stat-box"><div class="label">Return</div><div class="value" id="stat-pct">0.00%</div></div>
   </div>
-
   <div class="card">
     <div class="card-title">Holdings</div>
-    <div id="holdings-list"><div class="loader" style="padding:20px">No holdings yet. Add one below.</div></div>
+    <div id="holdings-list"><div class="loader" style="padding:20px;font-size:13px">No holdings yet. Add one below.</div></div>
   </div>
-
   <div class="card">
     <div class="card-title">Add Holding</div>
     <div class="input-grid">
-      <input type="text" id="add-symbol" placeholder="Symbol (e.g. BDO)" style="text-transform:uppercase" />
-      <input type="number" id="add-shares" placeholder="Number of Shares" min="1" />
-      <input type="number" id="add-price" placeholder="Buy Price per Share (₱)" min="0.01" step="0.01" />
-      <input type="date" id="add-date" />
-      <select id="add-broker">
-        <option value="col">COL Financial (0.25%)</option>
-        <option value="bpi">BPI Trade (0.30%)</option>
-        <option value="firstmetro">First Metro Sec (0.25%)</option>
-        <option value="gotrade">GCash/GoTrade (0.25%)</option>
-        <option value="dragonfi">DragonFi (0.20%)</option>
-        <option value="abscbn">CitisecOnline (0.25%)</option>
-        <option value="custom">Custom Rate</option>
-      </select>
-      <button class="btn btn-primary" onclick="addHolding()">+ Add Stock</button>
+      <div><div class="input-label">Symbol</div><input type="text" id="add-symbol" placeholder="e.g. BDO" style="text-transform:uppercase"/></div>
+      <div><div class="input-label">Shares</div><input type="number" id="add-shares" placeholder="Number of shares" min="1"/></div>
+      <div><div class="input-label">Buy Price (₱)</div><input type="number" id="add-price" placeholder="Price per share" min="0.01" step="0.01"/></div>
+      <div><div class="input-label">Date</div><input type="date" id="add-date"/></div>
+      <div><div class="input-label">Broker</div>
+        <select id="add-broker">
+          <option value="col">COL Financial (0.25%)</option>
+          <option value="bpi">BPI Trade (0.30%)</option>
+          <option value="firstmetro">First Metro Sec (0.25%)</option>
+          <option value="gotrade">GCash/GoTrade (0.25%)</option>
+          <option value="dragonfi">DragonFi (0.20%)</option>
+          <option value="abscbn">CitisecOnline (0.25%)</option>
+          <option value="custom">Custom Rate</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="addHolding()">+ Add Stock</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ DIVIDENDS PANEL ═══ -->
+<!-- DIVIDENDS PANEL -->
 <div class="panel" id="panel-dividends">
-  <div id="div-source-note" class="note" style="border-left-color:var(--amber);background:var(--amber-bg);color:var(--amber);margin-bottom:12px">
-    ⚠️ <strong>No backend connected.</strong> Showing estimated historical data. Deploy the backend server and set <code>BACKEND_URL</code> to get real PSE Edge disclosures automatically.
+  <div id="div-source-note" class="note note-amber" style="margin-bottom:12px">
+    ⚠️ <strong>No backend connected.</strong> Showing estimated historical data. Deploy the backend and set BACKEND_URL to get real PSE Edge disclosures.
   </div>
   <div class="pill-row" id="sector-pills"></div>
   <div class="tbl-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>Stock</th>
-          <th>Sector</th>
-          <th class="num">DPS (₱)</th>
-          <th>Ex-Date</th>
-          <th>Pay Date</th>
-          <th class="num">Est. Yield</th>
-          <th>Countdown</th>
-          <th>Frequency</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>Stock</th><th>Sector</th>
+        <th class="num">DPS (₱)</th><th>Ex-Date</th><th>Pay Date</th>
+        <th class="num">Est. Yield</th><th>Countdown</th><th>Frequency</th>
+      </tr></thead>
       <tbody id="div-table-body"></tbody>
     </table>
   </div>
-  <div class="note" style="border-left-color:var(--amber);background:var(--amber-bg)">
-    ⚠️ <strong>Dividend data is NOT real-time.</strong> The dates, DPS, and yields shown here are based on historical patterns and manually curated estimates. They may not reflect the latest declarations.
-    Always confirm on <a href="https://edge.pse.com.ph" target="_blank">PSE Edge</a> before making any decisions. Yields are annualized based on current/reference price.
-  </div>
+  <div class="note" style="margin-top:12px">ℹ️ Dividend data is estimated. Always verify on <a href="https://edge.pse.com.ph" target="_blank">PSE Edge</a> before trading.</div>
 </div>
 
-<!-- ═══ NEWS PANEL ═══ -->
+<!-- NEWS PANEL -->
 <div class="panel" id="panel-news">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-    <div>
-      <p style="font-size:13px;color:var(--text2)">AI-powered PSE & Philippine market news using web search.</p>
-    </div>
+    <p style="font-size:13px;color:var(--text2)">AI-curated PSE & Philippine market news.</p>
     <button class="btn btn-primary" onclick="loadNews()" id="news-refresh-btn">🔍 Fetch Latest News</button>
   </div>
-  <div class="input-grid" style="margin-bottom:14px">
-    <input type="text" id="news-topic" placeholder='Custom topic (e.g. "BDO earnings", "REIT dividends 2026")' />
-    <button class="btn btn-outline" onclick="loadNews(true)">Search This Topic</button>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <input type="text" id="news-topic" placeholder='Custom topic (e.g. "BDO earnings", "REIT dividends 2026")' style="flex:1"/>
+    <button class="btn btn-outline" onclick="loadNews(true)">Search Topic</button>
   </div>
   <div id="news-content">
-    <div class="card" style="text-align:center;padding:40px;border-style:dashed">
-      <div style="font-size:32px;margin-bottom:12px">📰</div>
-      <p style="color:var(--text2);margin-bottom:6px">Click <strong>Fetch Latest News</strong> to load AI-curated PSE news</p>
-      <p class="small muted">Powered by Claude AI + real-time web search</p>
+    <div style="text-align:center;padding:50px;border:1px dashed var(--border);border-radius:var(--r2)">
+      <div style="font-size:36px;margin-bottom:12px">📰</div>
+      <p style="color:var(--text2);margin-bottom:6px;font-weight:500">Click Fetch Latest News to load AI-curated PSE news</p>
+      <p class="small muted">Powered by Claude AI + live web search</p>
     </div>
   </div>
 </div>
 
-<!-- ═══ AI PICKS PANEL ═══ -->
+<!-- AI PICKS PANEL -->
 <div class="panel" id="panel-picks">
-  <div style="margin-bottom:16px">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Claude AI analyzes PSE stocks using four investment frameworks. Pick a strategy to get personalized stock picks.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px">
-      <button class="pick-strategy-btn btn" data-strat="GROWTH" onclick="loadPicks('GROWTH')" style="border:1px solid var(--blue);color:var(--blue);background:var(--blue-bg);padding:14px;border-radius:10px;text-align:left">
-        <div style="font-size:18px;margin-bottom:6px">🚀</div>
-        <div style="font-weight:600;margin-bottom:4px">Growth</div>
-        <div style="font-size:11px;color:#93c5fd">High revenue & earnings growth stocks</div>
-      </button>
-      <button class="pick-strategy-btn btn" data-strat="VALUE" onclick="loadPicks('VALUE')" style="border:1px solid var(--green);color:var(--green);background:var(--green-bg);padding:14px;border-radius:10px;text-align:left">
-        <div style="font-size:18px;margin-bottom:6px">💎</div>
-        <div style="font-weight:600;margin-bottom:4px">Value</div>
-        <div style="font-size:11px;color:#86efac">Undervalued stocks trading below intrinsic value</div>
-      </button>
-      <button class="pick-strategy-btn btn" data-strat="MOAT" onclick="loadPicks('MOAT')" style="border:1px solid var(--purple);color:var(--purple);background:var(--purple-bg);padding:14px;border-radius:10px;text-align:left">
-        <div style="font-size:18px;margin-bottom:6px">🏰</div>
-        <div style="font-weight:600;margin-bottom:4px">Moat</div>
-        <div style="font-size:11px;color:#c4b5fd">Companies with strong competitive advantages</div>
-      </button>
-      <button class="pick-strategy-btn btn" data-strat="DIVIDENDS" onclick="loadPicks('DIVIDENDS')" style="border:1px solid var(--amber);color:var(--amber);background:var(--amber-bg);padding:14px;border-radius:10px;text-align:left">
-        <div style="font-size:18px;margin-bottom:6px">💰</div>
-        <div style="font-weight:600;margin-bottom:4px">Dividends</div>
-        <div style="font-size:11px;color:#fcd34d">Consistent high-yield dividend payers</div>
-      </button>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Claude AI analyzes PSE stocks using four investment frameworks. Pick a strategy below.</p>
+  <div class="strategy-grid">
+    <div class="strat-card growth" onclick="loadPicks('GROWTH')">
+      <div class="strat-icon">🚀</div>
+      <div class="strat-name" style="color:var(--accent)">Growth</div>
+      <div class="strat-desc">High revenue & earnings growth stocks</div>
+    </div>
+    <div class="strat-card value" onclick="loadPicks('VALUE')">
+      <div class="strat-icon">💎</div>
+      <div class="strat-name" style="color:var(--green)">Value</div>
+      <div class="strat-desc">Undervalued stocks below intrinsic value</div>
+    </div>
+    <div class="strat-card moat" onclick="loadPicks('MOAT')">
+      <div class="strat-icon">🏰</div>
+      <div class="strat-name" style="color:var(--purple)">Moat</div>
+      <div class="strat-desc">Strong competitive advantage companies</div>
+    </div>
+    <div class="strat-card dividends" onclick="loadPicks('DIVIDENDS')">
+      <div class="strat-icon">💰</div>
+      <div class="strat-name" style="color:var(--amber)">Dividends</div>
+      <div class="strat-desc">Consistent high-yield dividend payers</div>
     </div>
   </div>
   <div id="picks-content">
-    <div class="card" style="text-align:center;padding:40px;border-style:dashed">
-      <div style="font-size:32px;margin-bottom:12px">🤖</div>
-      <p style="color:var(--text2);margin-bottom:6px">Choose a strategy above to get AI-powered stock picks</p>
-      <p class="small muted">Claude AI analyzes fundamentals, moats, and market data for PSE stocks</p>
+    <div style="text-align:center;padding:50px;border:1px dashed var(--border);border-radius:var(--r2)">
+      <div style="font-size:36px;margin-bottom:12px">🤖</div>
+      <p style="color:var(--text2);margin-bottom:6px;font-weight:500">Choose a strategy above to get AI stock picks</p>
+      <p class="small muted">Powered by Claude AI with PSE market knowledge</p>
     </div>
   </div>
-  <div class="note" style="margin-top:12px">⚠️ AI picks are for <strong>educational purposes only</strong> and not financial advice. Always do your own research (DYOR) before investing.</div>
+  <div class="note" style="margin-top:14px">⚠️ AI picks are for <strong>educational purposes only</strong>. Not financial advice. Always DYOR.</div>
 </div>
 
-<!-- ═══ CALCULATOR PANEL ═══ -->
+<!-- CALCULATOR PANEL -->
 <div class="panel" id="panel-calculator">
   <div class="card">
     <div class="card-title">Transaction Type</div>
     <div class="toggle-row">
-      <button class="btn btn-buy active-type" id="type-buy" onclick="setCalcType('buy')">📈 BUY</button>
+      <button class="btn btn-buy" id="type-buy" onclick="setCalcType('buy')">📈 BUY</button>
       <button class="btn btn-outline" id="type-sell" onclick="setCalcType('sell')">📉 SELL</button>
     </div>
     <div class="input-grid">
-      <div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Number of Shares</div>
-        <input type="number" id="calc-shares" placeholder="e.g. 1000" oninput="calcFees()" />
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Price per Share (₱)</div>
-        <input type="number" id="calc-price" placeholder="e.g. 45.50" step="0.01" oninput="calcFees()" />
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Broker</div>
+      <div><div class="input-label">Number of Shares</div><input type="number" id="calc-shares" placeholder="e.g. 1000" oninput="calcFees()"/></div>
+      <div><div class="input-label">Price per Share (₱)</div><input type="number" id="calc-price" placeholder="e.g. 45.50" step="0.01" oninput="calcFees()"/></div>
+      <div><div class="input-label">Broker</div>
         <select id="calc-broker" onchange="calcFees()">
           <option value="col">COL Financial (0.25%)</option>
           <option value="bpi">BPI Trade (0.30%)</option>
@@ -434,24 +570,37 @@ tbody tr:hover{background:rgba(255,255,255,.02)}
         </select>
       </div>
       <div id="custom-rate-wrap" style="display:none">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Custom Commission Rate</div>
-        <input type="number" id="calc-custom-rate" value="0.0025" step="0.0001" oninput="calcFees()" />
+        <div class="input-label">Custom Commission Rate</div>
+        <input type="number" id="calc-custom-rate" value="0.0025" step="0.0001" oninput="calcFees()"/>
       </div>
     </div>
   </div>
-
   <div class="card" id="fee-result" style="display:none">
     <div class="card-title">Fee Breakdown</div>
     <div id="fee-rows"></div>
     <div class="fee-total" id="fee-total-box">
-      <span class="label" id="fee-total-label">Total Cost</span>
-      <span class="value" id="fee-total-val">₱0.00</span>
+      <span style="font-size:13px;color:var(--accent2)" id="fee-total-label">Total Cost</span>
+      <span style="font-size:22px;font-weight:700;font-family:var(--font-num);color:var(--accent)" id="fee-total-val">₱0.00</span>
     </div>
-    <div class="note" id="fee-note"></div>
+    <div class="note" id="fee-note" style="margin-top:10px"></div>
   </div>
 </div>
 
+<!-- FOOTER -->
+<div style="max-width:980px;margin:24px auto;padding:20px;border-top:1px solid var(--border);text-align:center">
+  <p style="font-size:12px;color:var(--text3);margin-bottom:12px">🇵🇭 PSE Investor Hub — Free tools for Filipino investors</p>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
+    <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" class="sponsor-link">💎 Partner Investment Offers</a>
+    <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" class="sponsor-link-gold">📊 Finance Deals</a>
+  </div>
+  <div style="font-size:10px;color:var(--text3);margin-bottom:8px">ADVERTISEMENT</div>
+  <script async="async" data-cfasync="false" src="https://pl28956807.profitablecpmratenetwork.com/939ecbc33915c868c85206044a16e47b/invoke.js"></script>
+  <div id="container-939ecbc33915c868c85206044a16e47b-2"></div>
+  <p style="font-size:10px;color:var(--text3);margin-top:12px">Data for educational purposes only. Not financial advice. Always DYOR.</p>
+</div>
+
 <script>
+
 // ═══════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════
@@ -793,14 +942,14 @@ function renderMarket(stocks, isDemo=false){
     <div class="card" style="margin-bottom:0">
       <div class="card-title" style="color:var(--green)">🚀 Top Gainers</div>
       ${topGainers.map(s=>`<div class="holding-row" style="padding:8px 0">
-        <div class="holding-info"><div class="symbol-tag">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
+        <div class="holding-info"><div class="sym">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
         <div class="holding-pnl"><div class="holding-val">${peso(s.price)}</div><div class="holding-change green">${pct(s.change)}</div></div>
       </div>`).join("")}
     </div>
     <div class="card" style="margin-bottom:0">
       <div class="card-title" style="color:var(--red)">📉 Top Losers</div>
       ${topLosers.map(s=>`<div class="holding-row" style="padding:8px 0">
-        <div class="holding-info"><div class="symbol-tag">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
+        <div class="holding-info"><div class="sym">${s.symbol}</div><div class="holding-sub">${s.name.slice(0,22)}</div></div>
         <div class="holding-pnl"><div class="holding-val">${peso(s.price)}</div><div class="holding-change red">${pct(s.change)}</div></div>
       </div>`).join("")}
     </div>
@@ -813,7 +962,7 @@ function renderMarket(stocks, isDemo=false){
       </tr></thead>
       <tbody id="stock-table-body">
         ${stocks.map(s=>`<tr>
-          <td><span class="symbol-tag">${s.symbol}</span></td>
+          <td><span class="sym">${s.symbol}</span></td>
           <td><span style="font-size:12px">${s.name}</span></td>
           <td><span class="badge badge-blue" style="font-size:10px">${s.sector||"—"}</span></td>
           <td class="num">${s.price>0?peso(s.price):"—"}</td>
@@ -839,7 +988,7 @@ function filterStocks(){
   if(countEl)countEl.textContent=`${filtered.length} stocks`;
   if(!tbody)return;
   tbody.innerHTML=filtered.map(s=>`<tr>
-    <td><span class="symbol-tag">${s.symbol}</span>${s.custom?` <span class="badge badge-amber" style="font-size:10px">custom</span>`:""}</td>
+    <td><span class="sym">${s.symbol}</span>${s.custom?` <span class="badge badge-amber" style="font-size:10px">custom</span>`:""}</td>
     <td><span style="font-size:12px">${s.name}</span></td>
     <td><span class="badge badge-blue" style="font-size:10px">${s.sector||"—"}</span></td>
     <td class="num">${s.price>0?peso(s.price):"—"}</td>
@@ -888,7 +1037,7 @@ function renderPortfolio(){
     <div class="holding-row">
       <div class="holding-info">
         <div class="holding-name">
-          <span class="symbol-tag">${h.symbol}</span>
+          <span class="sym">${h.symbol}</span>
           ${!h.hasLive?`<span class="badge badge-amber" style="margin-left:6px">no live price</span>`:""}
         </div>
         <div class="holding-sub">${h.shares.toLocaleString()} shares @ ${peso(h.buyPrice)} · ${h.broker.toUpperCase()} · ${h.date||"—"}</div>
@@ -995,7 +1144,7 @@ function renderDivTable(){
     else countBadge=`<span class="badge badge-green">${days}d</span>`;
 
     return`<tr>
-      <td><span class="symbol-tag">${d.symbol}</span><div style="font-size:11px;color:var(--text3)">${d.name}</div></td>
+      <td><span class="sym">${d.symbol}</span><div style="font-size:11px;color:var(--text3)">${d.name}</div></td>
       <td><span class="badge badge-blue">${d.sector}</span></td>
       <td class="num green">${peso(d.dps,4)}</td>
       <td>${d.exDate}</td>
@@ -1150,7 +1299,7 @@ async function loadPicks(strategy){
         <div class="card" style="margin-bottom:0">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px">
             <div>
-              <span class="symbol-tag" style="font-size:15px">${p.symbol}</span>
+              <span class="sym" style="font-size:15px">${p.symbol}</span>
               <span style="color:var(--text2);font-size:13px;margin-left:8px">${p.name}</span>
             </div>
             <div style="display:flex;gap:6px;align-items:center">
@@ -1250,28 +1399,7 @@ initDividends();
 renderPortfolio();
 loadMarket();
 startCountdown();
-</script>
-<!-- FOOTER WITH SMARTLINK -->
-<div style="max-width:960px;margin:20px auto;padding:16px;border-top:1px solid #1e3355;text-align:center">
-  <p style="font-size:11px;color:#4a6080;margin-bottom:10px">🇵🇭 PSE Investor Hub — Free tools for Filipino investors</p>
-  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px">
-    <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" rel="noopener"
-      style="font-size:12px;color:#a78bfa;text-decoration:none;padding:6px 16px;border:1px solid #4c1d95;border-radius:20px;background:#1e0c3d">
-      💎 Partner Investment Offers
-    </a>
-    <a href="https://www.profitablecpmratenetwork.com/hmh4x8azc?key=68d77b57ea15aeb78c1857be4bcb4ffd" target="_blank" rel="noopener"
-      style="font-size:12px;color:#f59e0b;text-decoration:none;padding:6px 16px;border:1px solid #78350f;border-radius:20px;background:#231700">
-      📊 Exclusive Finance Deals
-    </a>
-  </div>
-  <p style="font-size:10px;color:#4a6080">Data for educational purposes only. Not financial advice. Always DYOR.</p>
-</div>
 
-<!-- ADSTERRA BOTTOM BANNER -->
-<div style="max-width:960px;margin:0px auto;padding:0 16px 16px">
-<div style="font-size:10px;color:#4a6080;margin-bottom:6px;text-align:center">ADVERTISEMENT</div>
-<script async="async" data-cfasync="false" src="https://pl28956807.profitablecpmratenetwork.com/939ecbc33915c868c85206044a16e47b/invoke.js"></script>
-<div id="container-939ecbc33915c868c85206044a16e47b-2"></div>
-</div>
+</script>
 </body>
 </html>
