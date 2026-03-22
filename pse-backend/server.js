@@ -69,9 +69,14 @@ function ageMinutes(updatedAt) {
 
 // ─── API ROUTES ───────────────────────────────────────────────────────────────
 
-// Health check
+// Health check + keep-alive ping
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString(), uptime: process.uptime() });
+});
+
+// Ping endpoint for UptimeRobot keep-alive
+app.get("/ping", (req, res) => {
+  res.send("pong");
 });
 
 // Server & scrape status
