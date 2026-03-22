@@ -102,7 +102,7 @@ app.post("/api/news", async (req, res) => {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": KEY, "anthropic-version": "2023-06-01" },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
+        model: "claude-haiku-4-5",
         max_tokens: 2000,
         messages: [{
           role: "user",
