@@ -177,14 +177,12 @@ app.get("/api/disclosures", (req, res) => {
   res.json({ success: true, updatedAt: result.updatedAt, count: data.length, data });
 });
 
-// ─── AI NEWS (proxied — keeps API key secret on server) ──────────────────────
+// ─── AI NEWS ─────────────────────────────────────────────────────────────────
 app.post("/api/news", async (req, res) => {
   const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_KEY) {
-    return res.status(503).json({ error: "ANTHROPIC_API_KEY not set on server. Add it in Railway Variables." });
-  }
+  if (!ANTHROPIC_KEY) return res.status(503).json({ error: "ANTHROPIC_API_KEY not set on server. Add it in Railway Variables." });
   const { topic } = req.body;
-  const query = topic || "Philippine Stock Exchange PSE market news today 2026";
+  const query = topic || "Philippine Stock Exchange PSE stocks market";
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -192,47 +190,66 @@ app.post("/api/news", async (req, res) => {
         "Content-Type": "application/json",
         "x-api-key": ANTHROPIC_KEY,
         "anthropic-version": "2023-06-01",
-        "anthropic-beta": "web-search-2025-03-05",
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 1500,
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
-        system: `You are a PSE financial news analyst. Search for latest news about: "${query}".
-Return a JSON array of 6 news items. Each item: { title, summary, sentiment: "bullish"|"bearish"|"neutral", category, source, relevance }.
-Return ONLY valid JSON array, no markdown, no extra text.`,
-        messages: [{ role: "user", content: `Search PSE Philippine stock market news: ${query}` }],
+        max_tokens: 2000,
+        system: `You are a PSE (Philippine Stock Exchange) financial news analyst for Filipino investors.
+Generate 6 realistic, informative news items about: "${query}".
+Base them on real knowledge of PSE-listed companies, Philippine economy, and stock market trends.
+
+Return ONLY a valid JSON array with exactly this structure, no markdown, no extra text:
+[
+  {
+    "title": "concise news headline",
+    "summary": "2-3 sentence summary relevant to Filipino investors",
+    "sentiment": "bullish",
+    "category": "Banking",
+    "source": "BusinessWorld",
+    "relevance": "one sentence on why this matters to PSE investors"
+  }
+]
+sentiment must be exactly: "bullish", "bearish", or "neutral"
+category options: Earnings, Dividends, Economy, Policy, Banking, Property, Mining, Telco, REIT, Consumer, PSEi, Tech`,
+        messages: [{ role: "user", content: `Generate 6 PSE news items about: ${query}. Current date: ${new Date().toLocaleDateString("en-PH")}. Return only the JSON array.` }],
       }),
     });
     const data = await response.json();
+    console.log("News API response type:", data.content?.map(b => b.type));
     const textBlock = data.content?.find((b) => b.type === "text");
     let articles = [];
     if (textBlock) {
-      try {
-        articles = JSON.parse(textBlock.text.replace(/```json|```/g, "").trim());
-      } catch {
-        articles = [{ title: "News Summary", summary: textBlock.text.slice(0, 400), sentiment: "neutral", category: "General", source: "AI", relevance: "AI summary." }];
+      const clean = textBlock.text.replace(/```json|```/g, "").trim();
+      try { articles = JSON.parse(clean); }
+      catch (e) {
+        console.error("JSON parse error:", e.message, "Text:", clean.slice(0, 200));
+        articles = [{ title: "PSE Market Update", summary: textBlock.text.slice(0, 300), sentiment: "neutral", category: "General", source: "AI Analysis", relevance: "AI-generated market insight." }];
       }
+    } else {
+      console.error("No text block found. Content:", JSON.stringify(data.content?.slice(0,2)));
     }
     res.json({ success: true, articles, generatedAt: new Date().toISOString() });
   } catch (err) {
+    console.error("News error:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
-// ─── AI PICKS (proxied — keeps API key secret on server) ─────────────────────
+// ─── AI PICKS ────────────────────────────────────────────────────────────────
 app.post("/api/picks", async (req, res) => {
   const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_KEY) {
-    return res.status(503).json({ error: "ANTHROPIC_API_KEY not set on server. Add it in Railway Variables." });
-  }
+  if (!ANTHROPIC_KEY) return res.status(503).json({ error: "ANTHROPIC_API_KEY not set on server. Add it in Railway Variables." });
   const { strategy } = req.body;
-  if (!["GROWTH", "VALUE", "MOAT", "DIVIDENDS"].includes(strategy)) {
-    return res.status(400).json({ error: "Invalid strategy." });
-  }
+  if (!["GROWTH", "VALUE", "MOAT", "DIVIDENDS"].includes(strategy)) return res.status(400).json({ error: "Invalid strategy." });
   const stocks = loadData("stocks.json");
-  const stockList = (stocks?.data || []).slice(0, 60)
-    .map((s) => `${s.symbol} (${s.name}, ₱${s.price})`).join(", ");
+  const stockList = (stocks?.data || []).slice(0, 40).map((s) => `${s.symbol}(₱${s.price})`).join(", ")
+    || "BDO,BPI,MBT,ALI,SMPH,SM,AC,JFC,TEL,GLO,MER,AREIT,MREIT,FILRT,CREIT,DMC,AEV,AGI,URC,MONDE";
+  const stratDefs = {
+    GROWTH: "high revenue/earnings growth, expanding market share, strong ROE above 15%",
+    VALUE: "undervalued vs peers, low P/E ratio, strong balance sheet, temporarily mispriced",
+    MOAT: "durable competitive advantages — brand dominance, network effects, regulatory moats, switching costs",
+    DIVIDENDS: "consistent dividend payers, high yield above 4%, stable cash flow, includes REITs"
+  };
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -240,27 +257,54 @@ app.post("/api/picks", async (req, res) => {
         "Content-Type": "application/json",
         "x-api-key": ANTHROPIC_KEY,
         "anthropic-version": "2023-06-01",
-        "anthropic-beta": "web-search-2025-03-05",
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 1500,
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
-        system: `You are a Philippine stock market analyst. Analyze PSE stocks for ${strategy} strategy.
-Return JSON: { strategy, summary, picks: [{symbol, name, rating, targetUpside, thesis, keyMetric, risk}], avoid: [], avoidReason, marketContext }
-5 picks max. ONLY valid JSON, no markdown.`,
-        messages: [{ role: "user", content: `PSE ${strategy} picks. Available stocks: ${stockList || "BDO, BPI, ALI, SM, JFC, TEL, MER, AREIT, MREIT, FILRT"}` }],
+        max_tokens: 2000,
+        system: `You are a professional Philippine stock market analyst. Provide ${strategy} stock picks for PSE investors.
+${strategy} strategy means: ${stratDefs[strategy]}
+
+Return ONLY valid JSON with exactly this structure, no markdown, no extra text:
+{
+  "strategy": "${strategy}",
+  "summary": "2-3 sentence overview of this strategy for PSE context in 2026",
+  "marketContext": "1-2 sentences on current PSE market conditions relevant to this strategy",
+  "picks": [
+    {
+      "symbol": "BDO",
+      "name": "BDO Unibank",
+      "rating": "Strong Buy",
+      "targetUpside": "+18%",
+      "thesis": "2-3 sentence investment thesis",
+      "keyMetric": "ROE: 14.2%",
+      "risk": "main risk in one sentence"
+    }
+  ],
+  "avoid": ["SYMBOL1", "SYMBOL2"],
+  "avoidReason": "brief reason"
+}
+rating must be exactly: "Strong Buy", "Buy", or "Hold"
+Provide exactly 5 picks. Base on real PSE fundamentals knowledge.`,
+        messages: [{ role: "user", content: `Give me 5 PSE ${strategy} stock picks. Current PSE stocks: ${stockList}. Return only the JSON object.` }],
       }),
     });
     const data = await response.json();
+    console.log("Picks API response type:", data.content?.map(b => b.type));
     const textBlock = data.content?.find((b) => b.type === "text");
     let result = { strategy, picks: [], summary: "", marketContext: "", avoid: [], avoidReason: "" };
     if (textBlock) {
-      try { result = { ...result, ...JSON.parse(textBlock.text.replace(/```json|```/g, "").trim()) }; }
-      catch { result.summary = textBlock.text.slice(0, 300); }
+      const clean = textBlock.text.replace(/```json|```/g, "").trim();
+      try { result = { ...result, ...JSON.parse(clean) }; }
+      catch (e) {
+        console.error("Picks JSON parse error:", e.message, "Text:", clean.slice(0, 200));
+        result.summary = textBlock.text.slice(0, 300);
+      }
+    } else {
+      console.error("No text block in picks. Content:", JSON.stringify(data.content?.slice(0,2)));
     }
     res.json({ success: true, ...result, generatedAt: new Date().toISOString() });
   } catch (err) {
+    console.error("Picks error:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
